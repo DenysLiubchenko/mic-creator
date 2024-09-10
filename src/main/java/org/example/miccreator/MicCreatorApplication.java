@@ -1,0 +1,13 @@
+package org.example.miccreator;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class MicCreatorApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(MicCreatorApplication.class, args);
+    }
+
+}
