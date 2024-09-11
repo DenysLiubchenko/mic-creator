@@ -1,0 +1,62 @@
+[
+//  Product  ===========================
+  {
+    "type": "record",
+    "name": "Product",
+    "namespace": "org.example",
+    "fields": [
+      {
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "name": "price",
+        "type": "string"
+      }
+    ]
+  },
+//  ProductItem  ===========================
+  {
+    "type": "record",
+    "name": "ProductItem",
+    "namespace": "org.example",
+    "fields": [
+      {
+        "name": "productId",
+        "type": "long"
+      },
+      {
+        "name": "quantity",
+        "type": "int"
+      }
+    ]
+  },
+//  Cart     ===========================
+  {
+    "type": "record",
+    "name": "Cart",
+    "namespace": "org.example",
+    "fields": [
+      {
+        "name": "id",
+        "type": "long"
+      },
+      {
+        "name": "products",
+        "type": {
+          "type": "array",
+          "items": "org.example.ProductItem"
+        },
+        "default": []
+      },
+      {
+        "name": "discounts",
+        "type": {
+          "type": "array",
+          "items": "string"
+        },
+        "default": []
+      }
+    ]
+  }
+]

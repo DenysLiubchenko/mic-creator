@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>mic-creator</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <artifactId>core</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>core</name>
+    <description>core</description>
+
+    <properties>
+        <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+        <springdoc-openapi-starter-webmvc-ui.version>2.6.0</springdoc-openapi-starter-webmvc-ui.version>
+        <openapi-generator-maven-plugin.version>7.8.0</openapi-generator-maven-plugin.version>
+        <swagger-core.version>2.2.22</swagger-core.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>service-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>${swagger-core.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/api/openapi-rest.yml</inputSpec>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+                            <generatorName>spring</generatorName>
+                            <apiPackage>${project.groupId}.${project.artifactId}.generated.api</apiPackage>
+                            <modelPackage>${project.groupId}.${project.artifactId}.generated.model</modelPackage>
+                            <configOptions>
+                                <sourceFolder>src/gen/java/main</sourceFolder>
+                                <useTags>true</useTags>
+                                <interfaceOnly>true</interfaceOnly>
+                                <useJakartaEe>true</useJakartaEe>
+                                <useResponseEntity>false</useResponseEntity>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
