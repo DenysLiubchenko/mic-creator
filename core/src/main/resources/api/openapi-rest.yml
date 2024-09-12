@@ -96,11 +96,8 @@ paths:
       description: Adding discount to cart
       parameters:
         - $ref: '#/components/parameters/CartId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Discount'
+        - $ref: '#/components/parameters/DiscountCode'
+
       responses:
         '204':
           description: Update command was successfully sent
@@ -147,6 +144,7 @@ paths:
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
+  # todo: fix discount validation not working for post
   /discount:
     post:
       tags:
@@ -179,7 +177,9 @@ components:
         type: integer
         format: int64
         description: Id of the cart
+        minimum: 1
       example: 111
+
     ProductId:
       in: path
       name: productId
@@ -188,7 +188,9 @@ components:
         type: integer
         format: int64
         description: Id of the cart
+        minimum: 1
       example: 111
+
     DiscountId:
       in: path
       name: productId
@@ -197,7 +199,16 @@ components:
         type: integer
         format: int64
         description: Id of the cart
+        minimum: 1
       example: 111
+
+    DiscountCode:
+      in: query
+      name: code
+      required: true
+      schema:
+        $ref: '#/components/schemas/Discount'
+      example: 'F-2024'
 
   #RESPONSES
   #=======================================================================================================================
@@ -241,17 +252,20 @@ components:
     Cart:
       title: object
       properties:
-        id:
-          type: integer
-          format: int64
         products:
           type: array
+          nullable: false
+          uniqueItems: true
           items:
             $ref: '#/components/schemas/ProductItem'
+          default: [ ]
         discounts:
           type: array
+          nullable: false
+          uniqueItems: true
           items:
             $ref: '#/components/schemas/Discount'
+          default: [ ]
 
     ProductItem:
       type: object
@@ -259,21 +273,39 @@ components:
         productId:
           type: integer
           format: int64
+          nullable: false
+          minimum: 1
         quantity:
           type: integer
           format: int32
+          nullable: false
+          default: 1
+          minimum: 1
+      required:
+        - productId
 
     Discount:
       type: string
+      nullable: false
+      minLength: 1
+      pattern: "^\\S+$"
+
 
     Product:
       type: object
       properties:
         name:
           type: string
+          nullable: false
+          minLength: 1
         cost:
-          type: integer
+          type: number
           format: bigDecimal
+          nullable: false
+          minimum: 1
+      required:
+        - name
+        - cost
 
     ErrorObject:
       type: object
