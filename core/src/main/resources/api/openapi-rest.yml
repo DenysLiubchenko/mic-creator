@@ -271,7 +271,7 @@ components:
       properties:
         name:
           type: string
-        price:
+        cost:
           type: integer
           format: bigDecimal
 

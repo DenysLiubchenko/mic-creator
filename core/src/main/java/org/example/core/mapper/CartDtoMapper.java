@@ -4,7 +4,7 @@ import org.example.core.generated.model.CartDTO;
 import org.example.serviceapi.dto.CartDto;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {ProductItemMapper.class})
-public interface CartMapper {
+@Mapper(componentModel = "spring", uses = {ProductItemDtoMapper.class})
+public interface CartDtoMapper {
     CartDto toDto(CartDTO cartDTO);
 }

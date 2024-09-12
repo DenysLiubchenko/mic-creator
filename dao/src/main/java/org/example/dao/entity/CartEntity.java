@@ -35,11 +35,13 @@ public class CartEntity {
 
     @OneToMany(mappedBy = "cart")
     @Setter(AccessLevel.PRIVATE)
+    @Builder.Default
     private Set<ProductItemEntity> products = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "cart_discounts", joinColumns = @JoinColumn(name = "cart_id"))
     @Column(name = "discount_code")
     @Setter(AccessLevel.PRIVATE)
+    @Builder.Default
     private Set<String> discounts = new HashSet<>();
 }

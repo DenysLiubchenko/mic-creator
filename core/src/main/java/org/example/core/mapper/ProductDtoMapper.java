@@ -5,6 +5,6 @@ import org.example.serviceapi.dto.ProductDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ProductMapper {
+public interface ProductDtoMapper {
     ProductDto toDto(ProductDTO productDTO);
 }

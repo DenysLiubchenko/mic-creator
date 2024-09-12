@@ -19,6 +19,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class CartDto {
+    @Builder.Default
     private Set<ProductItemDto> products = new HashSet<>();
+    @Builder.Default
     private Set<String> discounts = new HashSet<>();
 }
