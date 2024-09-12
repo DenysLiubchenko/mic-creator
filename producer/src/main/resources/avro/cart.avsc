@@ -1,45 +1,53 @@
 [
-//  Product  ===========================
+  //  Product  ===========================
   {
     "type": "record",
     "name": "Product",
     "namespace": "org.example",
+    "doc": "Represents a product with its name and price.",
     "fields": [
       {
         "name": "name",
-        "type": "string"
+        "type": "string",
+        "doc": "The name of the product."
       },
       {
-        "name": "price",
-        "type": "string"
+        "name": "cost",
+        "type": "string",
+        "doc": "The price of the product in string format."
       }
     ]
   },
-//  ProductItem  ===========================
+  //  ProductItem  ===========================
   {
     "type": "record",
     "name": "ProductItem",
     "namespace": "org.example",
+    "doc": "Represents an item in a cart, linking a product by its ID and the quantity.",
     "fields": [
       {
         "name": "productId",
-        "type": "long"
+        "type": "long",
+        "doc": "The unique identifier of the product."
       },
       {
         "name": "quantity",
-        "type": "int"
+        "type": "int",
+        "doc": "The quantity of the product in the cart."
       }
     ]
   },
-//  Cart     ===========================
+  //  Cart     ===========================
   {
     "type": "record",
     "name": "Cart",
     "namespace": "org.example",
+    "doc": "Represents a shopping cart containing products and discounts.",
     "fields": [
       {
         "name": "id",
-        "type": "long"
+        "type": "long",
+        "doc": "The unique identifier of the cart."
       },
       {
         "name": "products",
@@ -47,7 +55,8 @@
           "type": "array",
           "items": "org.example.ProductItem"
         },
-        "default": []
+        "default": [],
+        "doc": "A list of products in the cart, represented by ProductItem."
       },
       {
         "name": "discounts",
@@ -55,7 +64,8 @@
           "type": "array",
           "items": "string"
         },
-        "default": []
+        "default": [],
+        "doc": "A list of discount codes applied to the cart."
       }
     ]
   }

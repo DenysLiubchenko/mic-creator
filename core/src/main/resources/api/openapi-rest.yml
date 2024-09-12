@@ -1,23 +1,24 @@
 openapi: 3.0.1
 info:
   title: Retail API
-  description: API description in OpenAPI 3.0 format
+  description: API for managing carts, products, and discounts in a retail system.
   version: 0.0.1
 
 servers:
   - url: 'http://localhost:8085'
 
-#TAGS
-#=======================================================================================================================
+# TAGS
+# =======================================================================================================================
 tags:
   - name: Cart
-    description: Cart related endpoints
+    description: Endpoints related to cart operations, including creation, update, and product/discount management.
   - name: Product
-    description: Product related endpoints
+    description: Endpoints for managing products in the system.
   - name: Discount
-    description: Discount related endpoints
-#ENDPOINTS
-#=======================================================================================================================
+    description: Endpoints for managing discounts in the system.
+
+# PATHS
+# =======================================================================================================================
 paths:
   /cart:
     post:
@@ -25,7 +26,7 @@ paths:
         - Cart
       summary: Save cart
       operationId: saveCart
-      description: Creation and saving cart
+      description: Creation and saving of a new cart.
       requestBody:
         content:
           application/json:
@@ -33,7 +34,7 @@ paths:
               $ref: '#/components/schemas/Cart'
       responses:
         '204':
-          description: Save command was successfully sent
+          description: Cart successfully created and saved.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
         '409':
@@ -45,7 +46,7 @@ paths:
         - Cart
       summary: Update cart
       operationId: updateCart
-      description: Updating existing cart
+      description: Updating an existing cart by its ID.
       parameters:
         - $ref: '#/components/parameters/CartId'
       requestBody:
@@ -55,7 +56,7 @@ paths:
               $ref: '#/components/schemas/Cart'
       responses:
         '204':
-          description: Update command was successfully sent
+          description: Cart successfully updated.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
         '404':
@@ -69,7 +70,7 @@ paths:
         - Cart
       summary: Add product to cart
       operationId: addProductToCart
-      description: Adding product to cart
+      description: Adds a product to the cart.
       parameters:
         - $ref: '#/components/parameters/CartId'
       requestBody:
@@ -79,7 +80,7 @@ paths:
               $ref: '#/components/schemas/ProductItem'
       responses:
         '204':
-          description: Update command was successfully sent
+          description: Product successfully added to the cart.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
         '404':
@@ -93,14 +94,13 @@ paths:
         - Cart
       summary: Add discount to cart
       operationId: addDiscountToCart
-      description: Adding discount to cart
+      description: Adds a discount to the cart.
       parameters:
         - $ref: '#/components/parameters/CartId'
         - $ref: '#/components/parameters/DiscountCode'
-
       responses:
         '204':
-          description: Update command was successfully sent
+          description: Discount successfully added to the cart.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
         '404':
@@ -113,12 +113,12 @@ paths:
         - Cart
       summary: Delete cart
       operationId: deleteCart
-      description: Deleting cart
+      description: Deletes an existing cart by its ID.
       parameters:
         - $ref: '#/components/parameters/CartId'
       responses:
         '204':
-          description: Delete command was successfully sent
+          description: Cart successfully deleted.
         '404':
           $ref: '#/components/responses/NotFoundResponse'
         '400':
@@ -130,7 +130,7 @@ paths:
         - Product
       summary: Save product
       operationId: saveProduct
-      description: Creation and saving product
+      description: Creation and saving of a new product.
       requestBody:
         content:
           application/json:
@@ -138,20 +138,19 @@ paths:
               $ref: '#/components/schemas/Product'
       responses:
         '204':
-          description: Save command was successfully sent
+          description: Product successfully created and saved.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
-  # todo: fix discount validation not working for post
   /discount:
     post:
       tags:
         - Discount
-      summary: Save Discount
+      summary: Save discount
       operationId: saveDiscount
-      description: Creation and saving Discount
+      description: Creation and saving of a new discount.
       requestBody:
         content:
           application/json:
@@ -159,14 +158,14 @@ paths:
               $ref: '#/components/schemas/Discount'
       responses:
         '204':
-          description: Save command was successfully sent
+          description: Discount successfully created and saved.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
-#COMPONENTS
-#=======================================================================================================================
+# COMPONENTS
+# =======================================================================================================================
 components:
   parameters:
     CartId:
@@ -176,7 +175,7 @@ components:
       schema:
         type: integer
         format: int64
-        description: Id of the cart
+        description: The unique identifier of the cart.
         minimum: 1
       example: 111
 
@@ -187,18 +186,18 @@ components:
       schema:
         type: integer
         format: int64
-        description: Id of the cart
+        description: The unique identifier of the product.
         minimum: 1
       example: 111
 
     DiscountId:
       in: path
-      name: productId
+      name: discountId
       required: true
       schema:
         type: integer
         format: int64
-        description: Id of the cart
+        description: The unique identifier of the discount.
         minimum: 1
       example: 111
 
@@ -208,13 +207,12 @@ components:
       required: true
       schema:
         $ref: '#/components/schemas/Discount'
+      description: The discount code to be applied to the cart.
       example: 'F-2024'
 
-  #RESPONSES
-  #=======================================================================================================================
   responses:
     NotFoundResponse:
-      description: Not found
+      description: The requested resource was not found.
       content:
         application/json:
           schema:
@@ -222,10 +220,10 @@ components:
           example:
             status: 404
             title: Not Found
-            detail: The requested resource was not found
+            detail: The requested resource was not found.
 
     ConflictResponse:
-      description: Conflict
+      description: The request could not be completed due to a conflict.
       content:
         application/json:
           schema:
@@ -233,10 +231,10 @@ components:
           example:
             status: 409
             title: Conflict
-            detail: The requested has conflict
+            detail: The request has a conflict.
 
     BadRequestResponse:
-      description: Bad Request
+      description: The request contains invalid data.
       content:
         application/json:
           schema:
@@ -244,16 +242,17 @@ components:
           example:
             status: 400
             title: Bad Request
-            detail: Invalid Request. Please, check the data in the request (QueryString Parameters and/or Body).
+            detail: Invalid request. Please check the data.
 
-  #SCHEMAS
-  #=======================================================================================================================
   schemas:
     Cart:
-      title: object
+      title: Cart
+      description: Represents a shopping cart containing products and discounts.
+      type: object
       properties:
         products:
           type: array
+          description: List of products in the cart.
           nullable: false
           uniqueItems: true
           items:
@@ -261,6 +260,7 @@ components:
           default: [ ]
         discounts:
           type: array
+          description: List of discounts applied to the cart.
           nullable: false
           uniqueItems: true
           items:
@@ -269,15 +269,18 @@ components:
 
     ProductItem:
       type: object
+      description: Represents a product item in the cart.
       properties:
         productId:
           type: integer
           format: int64
+          description: The unique identifier of the product.
           nullable: false
           minimum: 1
         quantity:
           type: integer
           format: int32
+          description: The quantity of the product.
           nullable: false
           default: 1
           minimum: 1
@@ -286,21 +289,24 @@ components:
 
     Discount:
       type: string
+      description: A valid discount code to be applied to the cart.
       nullable: false
       minLength: 1
       pattern: "^\\S+$"
 
-
     Product:
       type: object
+      description: Represents a product that can be added to a cart.
       properties:
         name:
           type: string
+          description: The name of the product.
           nullable: false
           minLength: 1
         cost:
           type: number
           format: bigDecimal
+          description: The price of the product.
           nullable: false
           minimum: 1
       required:
@@ -309,18 +315,18 @@ components:
 
     ErrorObject:
       type: object
+      description: Error response containing details about an exception.
       additionalProperties: false
       properties:
         status:
           type: integer
-          description: Error code
+          description: HTTP status code.
           minimum: 100
           maximum: 599
         title:
           type: string
-          description: Error title
+          description: Short description of the error.
           maxLength: 100
         detail:
           type: string
-          description: Details of the exception
-
+          description: Detailed message explaining the error.
