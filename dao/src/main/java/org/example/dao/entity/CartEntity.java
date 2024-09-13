@@ -1,9 +1,12 @@
 package org.example.dao.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -24,22 +27,23 @@ import java.util.Set;
 @Table(name = "carts")
 @Getter
 @Setter
-@EqualsAndHashCode
-@ToString
+@EqualsAndHashCode(exclude = {"products", "discounts"})
+@ToString(exclude = {"products", "discounts"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class CartEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     @Setter(AccessLevel.PRIVATE)
     @Builder.Default
     private Set<ProductItemEntity> products = new HashSet<>();
 
     @ElementCollection
-    @CollectionTable(name = "cart_discounts", joinColumns = @JoinColumn(name = "cart_id"))
+    @CollectionTable(name = "carts_discounts", joinColumns = @JoinColumn(name = "cart_id"))
     @Column(name = "discount_code")
     @Setter(AccessLevel.PRIVATE)
     @Builder.Default

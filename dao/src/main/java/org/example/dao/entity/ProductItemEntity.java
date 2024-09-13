@@ -5,6 +5,7 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,7 @@ public class ProductItemEntity {
     @EmbeddedId
     private ProductItemId id;
 
+    @MapsId("cartId")
     @ManyToOne
     @JoinColumn(name = "cart_id", insertable = false, updatable = false)
     private CartEntity cart;

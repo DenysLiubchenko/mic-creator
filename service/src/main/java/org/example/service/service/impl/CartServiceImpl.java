@@ -1,19 +1,21 @@
 package org.example.service.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.producer.producer.DeltaEventProducer;
-import org.example.producer.producer.FactEventProducer;
 import org.example.domain.dto.CartDto;
 import org.example.domain.dto.ProductItemDto;
 import org.example.domain.repository.CartRepository;
 import org.example.domain.service.CartService;
+import org.example.producer.producer.CartDeltaEventProducerImpl;
+import org.example.producer.producer.CartFactEventProducerImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CartServiceImpl implements CartService {
-    public final FactEventProducer factEventProducer;
-    public final DeltaEventProducer deltaEventProducer;
+    public final CartFactEventProducerImpl factEventProducer;
+    public final CartDeltaEventProducerImpl deltaEventProducer;
     public final CartRepository cartRepository;
 
     @Override

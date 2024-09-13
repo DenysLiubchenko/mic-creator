@@ -17,12 +17,14 @@ public class CartRepositoryImpl implements CartRepository {
     private final CartJpaAdapter cartJpaAdapter;
     private final CartEntityMapper cartEntityMapper;
 
+    // TODO: on update there are 2 read queries. Create different methods of adding products and discounts
     @Override
     public CartDto saveCart(CartDto cartDto) {
         CartEntity cartEntity = cartEntityMapper.fromDto(cartDto);
-        cartEntity = cartJpaAdapter.save(cartEntity);
+        cartEntity.getProducts().forEach(product -> product.setCart(cartEntity));
+        CartEntity savedCartEntity= cartJpaAdapter.save(cartEntity);
 
-        return getCartById(cartEntity.getId());
+        return getCartById(savedCartEntity.getId());
     }
 
     @Override

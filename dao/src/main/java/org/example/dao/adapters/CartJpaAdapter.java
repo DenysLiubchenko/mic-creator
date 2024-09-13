@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface CartJpaAdapter extends JpaRepository<CartEntity, Long> {
-    @Query("SELECT c FROM CartEntity c LEFT JOIN FETCH c.discounts d LEFT JOIN FETCH c.products p")
+    @Query("SELECT c FROM CartEntity c LEFT JOIN FETCH c.discounts d LEFT JOIN FETCH c.products p WHERE c.id=:id")
     Optional<CartEntity> findByIdFetchDiscountsAndProductIds(Long id);
 }
