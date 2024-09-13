@@ -1,0 +1,28 @@
+{
+  "type": "record",
+  "name": "ProductFactEvent",
+  "namespace": "org.example",
+  "doc": "Represents a product.",
+  "fields": [
+    {
+      "name": "reason",
+      "type": "string",
+      "doc": "Reason of operation eg. CREATE, UPDATE, DELETE"
+    },
+    {
+      "name": "id",
+      "type": "long",
+      "doc": "The unique identifier of the product."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "doc": "The name of the product."
+    },
+    {
+      "name": "cost",
+      "type": "string",
+      "doc": "The price of the product in string format."
+    }
+  ]
+}

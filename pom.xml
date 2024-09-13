@@ -18,7 +18,7 @@
     <modules>
         <module>core</module>
         <module>service</module>
-        <module>service-api</module>
+        <module>domain</module>
         <module>dao</module>
         <module>producer</module>
     </modules>

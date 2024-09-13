@@ -3,6 +3,7 @@ package org.example.core.handler;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -61,5 +62,19 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                                                                            WebRequest webRequest) {
         log.warn(ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    /**
+     * Method intercept exception {@link NotFoundException}.
+     *
+     * @param ex          The NotFoundException instance that occurred.
+     * @param webRequest The WebRequest associated with the request.
+     * @return A ResponseEntity containing the ExceptionResponse with HttpStatus.NOT_FOUND.
+     */
+    @ExceptionHandler(NotFoundException.class)
+    public final ResponseEntity<Object> handleConstraintViolationException(NotFoundException ex,
+                                                                           WebRequest webRequest) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 }

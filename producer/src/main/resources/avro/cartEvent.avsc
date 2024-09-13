@@ -1,0 +1,56 @@
+[
+  {
+    "type": "record",
+    "name": "ProductItem",
+    "namespace": "org.example",
+    "doc": "Represents an item in a cart, linking a product by its ID and the quantity.",
+    "fields": [
+      {
+        "name": "productId",
+        "type": "long",
+        "doc": "The unique identifier of the product."
+      },
+      {
+        "name": "quantity",
+        "type": "int",
+        "doc": "The quantity of the product in the cart."
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "CartFactEvent",
+    "namespace": "org.example",
+    "doc": "Represents a shopping cart containing products and discounts.",
+    "fields": [
+      {
+        "name": "reason",
+        "type": "string",
+        "doc": "Reason of operation eg. CREATE, UPDATE, DELETE"
+      },
+      {
+        "name": "id",
+        "type": "long",
+        "doc": "The unique identifier of the cart."
+      },
+      {
+        "name": "products",
+        "type": {
+          "type": "array",
+          "items": "org.example.ProductItem"
+        },
+        "default": [],
+        "doc": "A list of products in the cart, represented by ProductItem."
+      },
+      {
+        "name": "discounts",
+        "type": {
+          "type": "array",
+          "items": "string"
+        },
+        "default": [],
+        "doc": "A list of discount codes applied to the cart."
+      }
+    ]
+  }
+]

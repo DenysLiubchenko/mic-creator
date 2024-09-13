@@ -6,9 +6,9 @@ import org.example.core.generated.model.CartDTO;
 import org.example.core.generated.model.ProductItemDTO;
 import org.example.core.mapper.CartDtoMapper;
 import org.example.core.mapper.ProductItemDtoMapper;
-import org.example.serviceapi.dto.CartDto;
-import org.example.serviceapi.dto.ProductItemDto;
-import org.example.serviceapi.service.CartService;
+import org.example.domain.dto.CartDto;
+import org.example.domain.dto.ProductItemDto;
+import org.example.domain.service.CartService;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,7 +44,7 @@ public class CartController implements CartApi {
 
     @Override
     public void updateCart(Long cartId, CartDTO cartDTO) {
-        CartDto cart = cartDtoMapper.toDto(cartDTO);
-        cartService.updateCart(cartId, cart);
+        CartDto cart = cartDtoMapper.toDto(cartDTO, cartId);
+        cartService.updateCart(cart);
     }
 }

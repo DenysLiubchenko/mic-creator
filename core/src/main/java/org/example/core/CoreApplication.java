@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "org.example")
-@EntityScan(basePackages = "org.example.dao.entity")
-@EnableJpaRepositories(basePackages = "org.example.dao.repository")
+@EntityScan(basePackages = "org.example.dao")
+@EnableJpaRepositories(basePackages = "org.example.dao")
 public class CoreApplication {
 
     public static void main(String[] args) {

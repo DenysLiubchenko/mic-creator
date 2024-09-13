@@ -206,7 +206,7 @@ components:
       name: code
       required: true
       schema:
-        $ref: '#/components/schemas/Discount'
+        $ref: '#/components/schemas/DiscountItem'
       description: The discount code to be applied to the cart.
       example: 'F-2024'
 
@@ -264,7 +264,7 @@ components:
           nullable: false
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/Discount'
+            $ref: '#/components/schemas/DiscountItem'
           default: [ ]
 
     ProductItem:
@@ -287,12 +287,27 @@ components:
       required:
         - productId
 
-    Discount:
+    DiscountItem:
       type: string
       description: A valid discount code to be applied to the cart.
       nullable: false
       minLength: 1
       pattern: "^\\S+$"
+
+    Discount:
+      type: object
+      description: .
+      properties:
+        code:
+          $ref: '#/components/schemas/DiscountItem'
+        due:
+          type: string
+          format: date-time
+          nullable: false
+          description: "ISO 8601 date-time with offset for code to expire. Must be in the future."
+      required:
+        - code
+        - due
 
     Product:
       type: object

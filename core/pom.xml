@@ -22,7 +22,7 @@
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>service-api</artifactId>
+            <artifactId>domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

@@ -4,8 +4,9 @@ import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.example.Cart;
-import org.example.Product;
+import org.example.CartFactEvent;
+import org.example.DiscountFactEvent;
+import org.example.ProductFactEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,33 +23,33 @@ public class KafkaConfig {
     private @Value("${kafka.bootstrap-servers}") String bootstrapServer;
 
     @Bean
-    public ProducerFactory<String, Cart> cartProducerFactory() {
+    public ProducerFactory<String, CartFactEvent> cartFactEventProducerFactory() {
         return new DefaultKafkaProducerFactory<>(producerAvroConfig(schemaRegistry, bootstrapServer));
     }
 
     @Bean
-    public KafkaTemplate<String, Cart> cartKafkaTemplate(ProducerFactory<String, Cart> cartProducerFactory) {
-        return new KafkaTemplate<>(cartProducerFactory);
+    public KafkaTemplate<String, CartFactEvent> cartFactEventKafkaTemplate(ProducerFactory<String, CartFactEvent> cartFactEventProducerFactory) {
+        return new KafkaTemplate<>(cartFactEventProducerFactory);
     }
 
     @Bean
-    public ProducerFactory<String, String> discountProducerFactory() {
+    public ProducerFactory<String, DiscountFactEvent> discountFactEventProducerFactory() {
         return new DefaultKafkaProducerFactory<>(producerAvroConfig(schemaRegistry, bootstrapServer));
     }
 
     @Bean
-    public KafkaTemplate<String, String> discountKafkaTemplate(ProducerFactory<String, String> discountProducerFactory) {
-        return new KafkaTemplate<>(discountProducerFactory);
+    public KafkaTemplate<String, DiscountFactEvent> discountFactEventKafkaTemplate(ProducerFactory<String, DiscountFactEvent> discountFactEventProducerFactory) {
+        return new KafkaTemplate<>(discountFactEventProducerFactory);
     }
 
     @Bean
-    public ProducerFactory<String, Product> productProducerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerStringConfig(bootstrapServer));
+    public ProducerFactory<String, ProductFactEvent> productFactEventProducerFactory() {
+        return new DefaultKafkaProducerFactory<>(producerAvroConfig(schemaRegistry, bootstrapServer));
     }
 
     @Bean
-    public KafkaTemplate<String, Product> productKafkaTemplate(ProducerFactory<String, Product> productProducerFactory) {
-        return new KafkaTemplate<>(productProducerFactory);
+    public KafkaTemplate<String, ProductFactEvent> productFactEventKafkaTemplate(ProducerFactory<String, ProductFactEvent> productFactEventProducerFactory) {
+        return new KafkaTemplate<>(productFactEventProducerFactory);
     }
 
     private Map<String, Object> producerAvroConfig(String schemaRegistry, String bootstrapServer) {
@@ -61,17 +62,6 @@ public class KafkaConfig {
         config.put(ProducerConfig.BATCH_SIZE_CONFIG, 32 * 1024);
         config.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistry);
         config.put(KafkaAvroSerializerConfig.AUTO_REGISTER_SCHEMAS, false);
-        return config;
-    }
-
-    private Map<String, Object> producerStringConfig(String bootstrapServer) {
-        Map<String, Object> config = new HashMap<>();
-        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
-        config.put(ProducerConfig.LINGER_MS_CONFIG, 10);
-        config.put(ProducerConfig.BATCH_SIZE_CONFIG, 32 * 1024);
         return config;
     }
 }

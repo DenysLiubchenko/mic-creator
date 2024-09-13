@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "name": "DiscountFactEvent",
+  "namespace": "org.example",
+  "doc": "Represents a discount.",
+  "fields": [
+    {
+      "name": "reason",
+      "type": "string",
+      "doc": "Reason of operation eg. CREATE, UPDATE, DELETE"
+    },
+    {
+      "name": "code",
+      "type": "string",
+      "doc": "Discount code."
+    },
+    {
+      "name": "due",
+      "type": "string",
+      "doc": "Date and time with the offset (ISO-8601) of code to expire."
+    }
+  ]
+}
