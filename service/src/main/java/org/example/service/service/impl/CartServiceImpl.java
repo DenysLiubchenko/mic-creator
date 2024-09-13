@@ -5,8 +5,8 @@ import org.example.domain.dto.CartDto;
 import org.example.domain.dto.ProductItemDto;
 import org.example.domain.repository.CartRepository;
 import org.example.domain.service.CartService;
-import org.example.producer.producer.CartDeltaEventProducerImpl;
-import org.example.producer.producer.CartFactEventProducerImpl;
+import org.example.domain.producer.CartFactEventProducer;
+import org.example.domain.producer.CartDeltaEventProducer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional
 public class CartServiceImpl implements CartService {
-    public final CartFactEventProducerImpl factEventProducer;
-    public final CartDeltaEventProducerImpl deltaEventProducer;
+    public final CartFactEventProducer factEventProducer;
+    public final CartDeltaEventProducer deltaEventProducer;
     public final CartRepository cartRepository;
 
     @Override

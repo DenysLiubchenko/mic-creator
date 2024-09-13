@@ -21,6 +21,7 @@
         <module>domain</module>
         <module>dao</module>
         <module>producer</module>
+        <module>boot</module>
     </modules>
 
     <properties>

@@ -1,4 +1,4 @@
-package org.example.producer.config;
+package org.example.boot.conig;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;

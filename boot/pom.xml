@@ -7,22 +7,30 @@
         <artifactId>mic-creator</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>service</artifactId>
+    <artifactId>boot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>service</name>
-    <description>service</description>
+    <name>boot</name>
+    <description>boot</description>
 
     <properties>
-
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>domain</artifactId>
+            <artifactId>core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>producer</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.example</groupId>
             <artifactId>dao</artifactId>
