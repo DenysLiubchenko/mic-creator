@@ -26,17 +26,15 @@ public class CartFactEventProducerImpl implements CartFactEventProducer {
     }
 
     @Override
-    public void sendUpdateEvent(Long cartId, CartDto cartDto) {
-        cartDto.setId(cartId);
+    public void sendUpdateEvent(CartDto cartDto) {
         CartFactEvent cartFactEvent = cartFactEventMapper.fromDto(cartDto, EventReason.UPDATE.name());
         cartKafkaTemplate.send(CART_TOPIC, String.valueOf(cartFactEvent.getId()), cartFactEvent);
         log.info("Sent update cart {} fact event to topic {}", cartFactEvent, CART_TOPIC);
     }
 
     @Override
-    public void sendDeleteEvent(Long cartId, CartDto cartDto) {
-        cartDto.setId(cartId);
-        CartFactEvent cartFactEvent = cartFactEventMapper.fromDto(cartDto, EventReason.UPDATE.name());
+    public void sendDeleteEvent(CartDto cartDto) {
+        CartFactEvent cartFactEvent = cartFactEventMapper.fromDto(cartDto, EventReason.DELETE.name());
         cartKafkaTemplate.send(CART_TOPIC, String.valueOf(cartFactEvent.getId()), cartFactEvent);
         log.info("Sent delete cart {} fact event to topic {}", cartFactEvent, CART_TOPIC);
     }

@@ -1,0 +1,88 @@
+[
+  {
+    "type": "record",
+    "name": "ProductItem",
+    "namespace": "org.example",
+    "doc": "Represents an item in a cart, linking a product by its ID and the quantity.",
+    "fields": [
+      {
+        "name": "productId",
+        "type": "long",
+        "doc": "The unique identifier of the product."
+      },
+      {
+        "name": "quantity",
+        "type": "int",
+        "doc": "The quantity of the product in the cart."
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "CartAddProductEvent",
+    "namespace": "org.example",
+    "fields": [
+      {
+        "name": "id",
+        "type": "long",
+        "doc": "The unique identifier of the cart."
+      },
+      {
+        "name": "product",
+        "type": "org.example.ProductItem"
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "CartRemoveProductEvent",
+    "namespace": "org.example",
+    "fields": [
+      {
+        "name": "id",
+        "type": "long",
+        "doc": "The unique identifier of the cart."
+      },
+      {
+        "name": "productId",
+        "type": "long",
+        "doc": "The unique identifier of the product."
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "CartDiscountEvent",
+    "namespace": "org.example",
+    "fields": [
+      {
+        "name": "reason",
+        "type": "string",
+        "doc": "Reason of change"
+      },
+      {
+        "name": "id",
+        "type": "long",
+        "doc": "The unique identifier of the cart."
+      },
+      {
+        "name": "discount",
+        "type": "string",
+        "doc": "Discount code"
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "DeleteDiscountEvent",
+    "namespace": "org.example",
+    "doc": "Represents a shopping cart containing products and discounts.",
+    "fields": [
+      {
+        "name": "discount",
+        "type": "string",
+        "doc": "Discount code"
+      }
+    ]
+  }
+]

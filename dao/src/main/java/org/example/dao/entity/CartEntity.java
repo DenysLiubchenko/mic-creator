@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -37,15 +36,34 @@ public class CartEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    @Setter(AccessLevel.PRIVATE)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private Set<ProductItemEntity> products = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "carts_discounts", joinColumns = @JoinColumn(name = "cart_id"))
     @Column(name = "discount_code")
-    @Setter(AccessLevel.PRIVATE)
     @Builder.Default
     private Set<String> discounts = new HashSet<>();
+
+    public boolean addProduct(ProductItemEntity product) {
+        if (products.add(product)) {
+            product.setCart(this);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean removeProduct(ProductItemEntity product) {
+        return products.remove(product);
+    }
+
+    public boolean addDiscount(String discountCode) {
+        return discounts.add(discountCode);
+    }
+
+    public boolean removeDiscount(String discountCode) {
+        return discounts.remove(discountCode);
+    }
 }

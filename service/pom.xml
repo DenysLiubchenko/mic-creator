@@ -12,10 +12,6 @@
     <name>service</name>
     <description>service</description>
 
-    <properties>
-
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
@@ -24,9 +20,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>dao</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
     </dependencies>
 </project>

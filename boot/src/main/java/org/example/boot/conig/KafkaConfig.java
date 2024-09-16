@@ -2,6 +2,7 @@ package org.example.boot.conig;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
+import io.confluent.kafka.serializers.subject.TopicRecordNameStrategy;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.example.CartFactEvent;
@@ -55,13 +56,14 @@ public class KafkaConfig {
     private Map<String, Object> producerAvroConfig(String schemaRegistry, String bootstrapServer) {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
-        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class);
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, KafkaAvroSerializer.class.getName());
         config.put(ProducerConfig.COMPRESSION_TYPE_CONFIG, "snappy");
         config.put(ProducerConfig.LINGER_MS_CONFIG, 10);
         config.put(ProducerConfig.BATCH_SIZE_CONFIG, 32 * 1024);
         config.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistry);
         config.put(KafkaAvroSerializerConfig.AUTO_REGISTER_SCHEMAS, true);
+        config.put(KafkaAvroSerializerConfig.VALUE_SUBJECT_NAME_STRATEGY, TopicRecordNameStrategy.class.getName());
         return config;
     }
 }

@@ -19,6 +19,9 @@ public class DiscountRepositoryImpl implements DiscountRepository {
     @Override
     public DiscountDto save(DiscountDto discountDto) {
         DiscountEntity discountEntity = discountEntityMapper.fromDto(discountDto);
-        return discountEntityMapper.toDto(discountJpaAdapter.save(discountEntity));
+        DiscountEntity saved = discountJpaAdapter.save(discountEntity);
+        discountJpaAdapter.flush();
+        log.info("Saved discount: {}", saved);
+        return discountEntityMapper.toDto(saved);
     }
 }

@@ -13,4 +13,8 @@ public interface CartService {
     void saveCart(CartDto cart);
 
     void updateCart(CartDto cart);
+
+    void removeDiscountFromCartWithId(Long cartId, String code);
+
+    void removeProductFromCartWithId(Long cartId, Long productId);
 }

@@ -41,7 +41,7 @@ paths:
           $ref: '#/components/responses/ConflictResponse'
 
   /cart/{cartId}:
-    post:
+    put:
       tags:
         - Cart
       summary: Update cart
@@ -68,7 +68,7 @@ paths:
     patch:
       tags:
         - Cart
-      summary: Add product to cart
+      summary: Add product to the cart
       operationId: addProductToCart
       description: Adds a product to the cart.
       parameters:
@@ -88,13 +88,53 @@ paths:
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
+  /cart/{cartId}/products/remove:
+    patch:
+      tags:
+        - Cart
+      summary: Remove product from the cart
+      operationId: removeProductFromCart
+      description: Removes a product from the cart.
+      parameters:
+        - $ref: '#/components/parameters/CartId'
+        - $ref: '#/components/parameters/ProductId'
+      responses:
+        '204':
+          description: Product successfully removed from the cart.
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '409':
+          $ref: '#/components/responses/ConflictResponse'
+
   /cart/{cartId}/discounts:
     patch:
       tags:
         - Cart
-      summary: Add discount to cart
+      summary: Add discount to the cart
       operationId: addDiscountToCart
       description: Adds a discount to the cart.
+      parameters:
+        - $ref: '#/components/parameters/CartId'
+        - $ref: '#/components/parameters/DiscountCode'
+      responses:
+        '204':
+          description: Discount successfully added to the cart.
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '409':
+          $ref: '#/components/responses/ConflictResponse'
+
+  /cart/{cartId}/discounts/remove:
+    patch:
+      tags:
+        - Cart
+      summary: Remove discount to the cart
+      operationId: removeDiscountFromCart
+      description: Removes a discount to the cart.
       parameters:
         - $ref: '#/components/parameters/CartId'
         - $ref: '#/components/parameters/DiscountCode'
@@ -180,24 +220,13 @@ components:
       example: 111
 
     ProductId:
-      in: path
+      in: query
       name: productId
       required: true
       schema:
         type: integer
         format: int64
         description: The unique identifier of the product.
-        minimum: 1
-      example: 111
-
-    DiscountId:
-      in: path
-      name: discountId
-      required: true
-      schema:
-        type: integer
-        format: int64
-        description: The unique identifier of the discount.
         minimum: 1
       example: 111
 

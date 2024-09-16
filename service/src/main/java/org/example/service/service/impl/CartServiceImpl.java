@@ -3,10 +3,10 @@ package org.example.service.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.dto.CartDto;
 import org.example.domain.dto.ProductItemDto;
+import org.example.domain.producer.CartDeltaEventProducer;
+import org.example.domain.producer.CartFactEventProducer;
 import org.example.domain.repository.CartRepository;
 import org.example.domain.service.CartService;
-import org.example.domain.producer.CartFactEventProducer;
-import org.example.domain.producer.CartDeltaEventProducer;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public void deleteById(Long cartId) {
         CartDto cartDto = cartRepository.deleteCart(cartId);
-        factEventProducer.sendDeleteEvent(cartId, cartDto);
+        factEventProducer.sendDeleteEvent(cartDto);
     }
 
     @Override
@@ -32,21 +32,31 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateCart(CartDto cart) {
-        CartDto updatedCart = cartRepository.saveCart(cart);
-        factEventProducer.sendUpdateEvent(updatedCart.getId(), updatedCart);
+        CartDto updatedCart = cartRepository.updateCart(cart);
+        factEventProducer.sendUpdateEvent(updatedCart);
+    }
+
+    @Override
+    public void removeDiscountFromCartWithId(Long cartId, String code) {
+        CartDto cartDto = cartRepository.removeDiscountFromCart(cartId, code);
+        factEventProducer.sendUpdateEvent(cartDto);
     }
 
     @Override
     public void addDiscountToCartWithId(Long cartId, String code) {
-        CartDto cartById = cartRepository.getCartById(cartId);
-        cartById.addDiscount(code);
-        updateCart(cartById);
+        CartDto cartDto = cartRepository.addDiscountToCart(cartId, code);
+        factEventProducer.sendUpdateEvent(cartDto);
+    }
+
+    @Override
+    public void removeProductFromCartWithId(Long cartId, Long productId) {
+        CartDto cartDto = cartRepository.removeProductFromCart(cartId, productId);
+        factEventProducer.sendUpdateEvent(cartDto);
     }
 
     @Override
     public void addProductToCartWithId(Long cartId, ProductItemDto productItem) {
-        CartDto cartById = cartRepository.getCartById(cartId);
-        cartById.addProductItem(productItem);
-        updateCart(cartById);
+        CartDto cartDto = cartRepository.addProductToCart(cartId, productItem);
+        factEventProducer.sendUpdateEvent(cartDto);
     }
 }

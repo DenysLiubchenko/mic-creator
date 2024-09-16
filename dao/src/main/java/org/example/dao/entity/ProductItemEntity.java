@@ -3,6 +3,7 @@ package org.example.dao.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
@@ -29,8 +30,8 @@ public class ProductItemEntity {
     private ProductItemId id;
 
     @MapsId("cartId")
-    @ManyToOne
-    @JoinColumn(name = "cart_id", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
     private CartEntity cart;
 
     @Column

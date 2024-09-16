@@ -19,6 +19,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductDto save(ProductDto productDto) {
         ProductEntity productEntity = productEntityMapper.fromDto(productDto);
-        return productEntityMapper.toDto(productJpaAdapter.save(productEntity));
+        ProductEntity saved = productJpaAdapter.save(productEntity);
+        productJpaAdapter.flush();
+        log.info("Saved product: {}", productEntity);
+        return productEntityMapper.toDto(saved);
     }
 }
