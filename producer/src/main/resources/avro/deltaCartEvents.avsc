@@ -19,41 +19,20 @@
   },
   {
     "type": "record",
-    "name": "CartAddProductEvent",
-    "namespace": "org.example",
+    "name": "DeleteCartDeltaEvent",
+    "namespace": "org.example.delta",
     "fields": [
       {
         "name": "id",
         "type": "long",
         "doc": "The unique identifier of the cart."
-      },
-      {
-        "name": "product",
-        "type": "org.example.ProductItem"
       }
     ]
   },
   {
     "type": "record",
-    "name": "CartRemoveProductEvent",
-    "namespace": "org.example",
-    "fields": [
-      {
-        "name": "id",
-        "type": "long",
-        "doc": "The unique identifier of the cart."
-      },
-      {
-        "name": "productId",
-        "type": "long",
-        "doc": "The unique identifier of the product."
-      }
-    ]
-  },
-  {
-    "type": "record",
-    "name": "CartDiscountEvent",
-    "namespace": "org.example",
+    "name": "ModifyProductItemCartDeltaEvent",
+    "namespace": "org.example.delta",
     "fields": [
       {
         "name": "reason",
@@ -66,22 +45,77 @@
         "doc": "The unique identifier of the cart."
       },
       {
-        "name": "discount",
-        "type": "string",
-        "doc": "Discount code"
+        "name": "products",
+        "type": {
+          "type": "array",
+          "items": "org.example.ProductItem"
+        },
+        "default": [],
+        "doc": "A list of products in the cart, represented by ProductItem."
       }
     ]
   },
   {
     "type": "record",
-    "name": "DeleteDiscountEvent",
-    "namespace": "org.example",
+    "name": "RemoveProductItemCartDeltaEvent",
+    "namespace": "org.example.delta",
+    "fields": [
+      {
+        "name": "id",
+        "type": "long",
+        "doc": "The unique identifier of the cart."
+      },
+      {
+        "name": "products",
+        "type": {
+          "type": "array",
+          "items": "org.example.ProductItem"
+        },
+        "default": [],
+        "doc": "A list of products in the cart, represented by ProductItem."
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "DiscountCartDeltaEvent",
+    "namespace": "org.example.delta",
+    "fields": [
+      {
+        "name": "reason",
+        "type": "string",
+        "doc": "Reason of change"
+      },
+      {
+        "name": "id",
+        "type": "long",
+        "doc": "The unique identifier of the cart."
+      },
+      {
+        "name": "discounts",
+        "type": {
+          "type": "array",
+          "items": "string"
+        },
+        "default": [],
+        "doc": "A list of discount codes applied to the cart."
+      }
+    ]
+  },
+  {
+    "type": "record",
+    "name": "DeleteDiscountDeltaEvent",
+    "namespace": "org.example.delta",
     "doc": "Represents a shopping cart containing products and discounts.",
     "fields": [
       {
-        "name": "discount",
-        "type": "string",
-        "doc": "Discount code"
+        "name": "discounts",
+        "type": {
+          "type": "array",
+          "items": "string"
+        },
+        "default": [],
+        "doc": "A list of discount codes applied to the cart."
       }
     ]
   }

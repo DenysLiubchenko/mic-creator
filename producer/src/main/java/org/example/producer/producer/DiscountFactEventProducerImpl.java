@@ -2,7 +2,7 @@ package org.example.producer.producer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.example.DiscountFactEvent;
+import org.example.fact.DiscountFactEvent;
 import org.example.domain.constant.EventReason;
 import org.example.domain.dto.DiscountDto;
 import org.example.domain.producer.DiscountFactEventProducer;
@@ -16,11 +16,11 @@ import org.springframework.stereotype.Service;
 public class DiscountFactEventProducerImpl implements DiscountFactEventProducer {
     private final String DISCOUNT_TOPIC = "discount-fact";
     private final DiscountFactEventMapper discountFactEventMapper;
-    private final KafkaTemplate<String, DiscountFactEvent> discountKafkaTemplate;
+    private final KafkaTemplate<String, Object> discountKafkaTemplate;
 
     @Override
     public void sendCreateEvent(DiscountDto discountDto) {
-        DiscountFactEvent discountFactEvent = discountFactEventMapper.fromDto(discountDto, EventReason.CREATE.name());
+        DiscountFactEvent discountFactEvent = discountFactEventMapper.toEvent(discountDto, EventReason.CREATE.name());
         discountKafkaTemplate.send(DISCOUNT_TOPIC, discountFactEvent.getCode(),  discountFactEvent);
         log.info("Sent save discount \"{}\" fact event to topic {}", discountFactEvent, DISCOUNT_TOPIC);
     }

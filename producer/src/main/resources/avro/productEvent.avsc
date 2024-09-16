@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "ProductFactEvent",
-  "namespace": "org.example",
+  "namespace": "org.example.fact",
   "doc": "Represents a product.",
   "fields": [
     {

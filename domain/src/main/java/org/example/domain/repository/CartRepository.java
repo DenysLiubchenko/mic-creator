@@ -14,6 +14,8 @@ public interface CartRepository {
 
     CartDto deleteCart(Long cartId);
 
+    CartDto getCartDtoById(Long cartId);
+
     CartDto removeDiscountFromCart(Long cartId, String code);
 
     CartDto removeProductFromCart(Long cartId, Long productId);

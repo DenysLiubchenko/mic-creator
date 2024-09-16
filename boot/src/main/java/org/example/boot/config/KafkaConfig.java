@@ -1,13 +1,10 @@
-package org.example.boot.conig;
+package org.example.boot.config;
 
 import io.confluent.kafka.serializers.KafkaAvroSerializer;
 import io.confluent.kafka.serializers.KafkaAvroSerializerConfig;
 import io.confluent.kafka.serializers.subject.TopicRecordNameStrategy;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.example.CartFactEvent;
-import org.example.DiscountFactEvent;
-import org.example.ProductFactEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,33 +21,13 @@ public class KafkaConfig {
     private @Value("${kafka.bootstrap-servers}") String bootstrapServer;
 
     @Bean
-    public ProducerFactory<String, CartFactEvent> cartFactEventProducerFactory() {
+    public ProducerFactory<String, Object> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerAvroConfig(schemaRegistry, bootstrapServer));
     }
 
     @Bean
-    public KafkaTemplate<String, CartFactEvent> cartFactEventKafkaTemplate(ProducerFactory<String, CartFactEvent> cartFactEventProducerFactory) {
-        return new KafkaTemplate<>(cartFactEventProducerFactory);
-    }
-
-    @Bean
-    public ProducerFactory<String, DiscountFactEvent> discountFactEventProducerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerAvroConfig(schemaRegistry, bootstrapServer));
-    }
-
-    @Bean
-    public KafkaTemplate<String, DiscountFactEvent> discountFactEventKafkaTemplate(ProducerFactory<String, DiscountFactEvent> discountFactEventProducerFactory) {
-        return new KafkaTemplate<>(discountFactEventProducerFactory);
-    }
-
-    @Bean
-    public ProducerFactory<String, ProductFactEvent> productFactEventProducerFactory() {
-        return new DefaultKafkaProducerFactory<>(producerAvroConfig(schemaRegistry, bootstrapServer));
-    }
-
-    @Bean
-    public KafkaTemplate<String, ProductFactEvent> productFactEventKafkaTemplate(ProducerFactory<String, ProductFactEvent> productFactEventProducerFactory) {
-        return new KafkaTemplate<>(productFactEventProducerFactory);
+    public KafkaTemplate<String, Object> kafkaTemplate(ProducerFactory<String, Object> producerFactory) {
+        return new KafkaTemplate<>(producerFactory);
     }
 
     private Map<String, Object> producerAvroConfig(String schemaRegistry, String bootstrapServer) {

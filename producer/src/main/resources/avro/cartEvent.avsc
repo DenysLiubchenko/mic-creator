@@ -20,7 +20,7 @@
   {
     "type": "record",
     "name": "CartFactEvent",
-    "namespace": "org.example",
+    "namespace": "org.example.fact",
     "doc": "Represents a shopping cart containing products and discounts.",
     "fields": [
       {

@@ -1,7 +1,7 @@
 {
   "type": "record",
   "name": "DiscountFactEvent",
-  "namespace": "org.example",
+  "namespace": "org.example.fact",
   "doc": "Represents a discount.",
   "fields": [
     {
