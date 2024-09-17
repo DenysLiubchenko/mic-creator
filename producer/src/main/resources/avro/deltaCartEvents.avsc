@@ -66,13 +66,13 @@
         "doc": "The unique identifier of the cart."
       },
       {
-        "name": "products",
+        "name": "productIds",
         "type": {
           "type": "array",
-          "items": "org.example.ProductItem"
+          "items": "long"
         },
         "default": [],
-        "doc": "A list of products in the cart, represented by ProductItem."
+        "doc": "A list of ids of products in the cart to remove."
       }
     ]
   },

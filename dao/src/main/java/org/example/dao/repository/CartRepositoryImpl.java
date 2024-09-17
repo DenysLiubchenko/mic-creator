@@ -117,8 +117,8 @@ public class CartRepositoryImpl implements CartRepository {
         CartEntity cartEntity = cartEntityMapper.fromDto(cartDto);
         CartEntity existingCart = getCartById(cartEntity.getId());
 
-        existingCart.getDiscounts().removeIf(discount->!cartEntity.getDiscounts().contains(discount));
-        cartEntity.getDiscounts().removeIf(discount->existingCart.getDiscounts().contains(discount));
+        existingCart.getDiscounts().removeIf(discount -> !cartEntity.getDiscounts().contains(discount));
+        cartEntity.getDiscounts().removeIf(discount -> existingCart.getDiscounts().contains(discount));
         cartEntity.getDiscounts().forEach(this::validateDiscountExistsByCode);
         existingCart.getDiscounts().addAll(cartEntity.getDiscounts());
 

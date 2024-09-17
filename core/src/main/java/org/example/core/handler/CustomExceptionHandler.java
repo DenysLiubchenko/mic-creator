@@ -8,16 +8,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.util.HashMap;
-import java.util.List;
 
 @ControllerAdvice
 @Slf4j
@@ -38,16 +33,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                                                                HttpStatusCode status,
                                                                WebRequest request) {
         log.warn(ex.getMessage());
-        HashMap<String, String> map = new HashMap<>();
-        List<ObjectError> errors = ex.getBindingResult().getAllErrors();
-
-        errors.forEach((error -> {
-            String fieldName = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            map.put(fieldName, message);
-        }));
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(map);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
     /**

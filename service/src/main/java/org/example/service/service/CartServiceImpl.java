@@ -1,4 +1,4 @@
-package org.example.service.service.impl;
+package org.example.service.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.dto.CartDto;
@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,47 +40,56 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateCart(CartDto cart) {
-        Long cartId = cart.getId();
-        CartDto oldCart = cartRepository.getCartDtoById(cartId);
+        CartDto oldCart = cartRepository.getCartDtoById(cart.getId());
         CartDto updatedCart = cartRepository.updateCart(cart);
         factEventProducer.sendUpdateEvent(updatedCart);
 
-        Set<String> addedDiscounts = new HashSet<>(updatedCart.getDiscounts());
-        addedDiscounts.removeAll(oldCart.getDiscounts());
-        Set<String> removedDiscounts = new HashSet<>(oldCart.getDiscounts());
-        removedDiscounts.removeAll(updatedCart.getDiscounts());
+        sendDeltaUpdateForDiscounts(oldCart, updatedCart);
+        sendDeltaUpdatesForProducts(oldCart, updatedCart);
+    }
 
-        if (!addedDiscounts.isEmpty()) {
-            deltaEventProducer.sendAddDiscountEvent(cartId, addedDiscounts.toArray(new String[0]));
-        }
-        if (!removedDiscounts.isEmpty()) {
-            deltaEventProducer.sendRemoveDiscountEvent(cartId, removedDiscounts.toArray(new String[0]));
-        }
-
-        Set<ProductItemDto> addedProducts = new HashSet<>(updatedCart.getProducts());
-        addedProducts.removeAll(oldCart.getProducts());
+    private void sendDeltaUpdatesForProducts(CartDto oldCart, CartDto newCart) {
+        Set<ProductItemDto> newProducts = new HashSet<>();
+        Set<ProductItemDto> modifiedProducts = new HashSet<>();
         Set<ProductItemDto> removedProducts = new HashSet<>(oldCart.getProducts());
-        removedProducts.removeAll(updatedCart.getProducts());
 
-        if (!addedProducts.isEmpty()) {
-            Set<ProductItemDto> newProducts = new HashSet<>(addedProducts).stream()
-                    .filter(productItemDto -> oldCart.getProducts().stream()
-                            .anyMatch(p -> p.getProductId().equals(productItemDto.getProductId())))
-                    .collect(Collectors.toSet());
+        Map<Long, ProductItemDto> oldProductMap = oldCart.getProducts().stream()
+                .collect(Collectors.toMap(ProductItemDto::getProductId, Function.identity()));
 
-            Set<ProductItemDto> updatedProducts = new HashSet<>(addedProducts);
-            addedProducts.removeAll(newProducts);
+        for (ProductItemDto updatedProduct : newCart.getProducts()) {
+            ProductItemDto oldProduct = oldProductMap.get(updatedProduct.getProductId());
 
-            if (!newProducts.isEmpty()) {
-                deltaEventProducer.sendAddProductItemEvent(cartId, newProducts.toArray(new ProductItemDto[0]));
+            if (oldProduct == null) {
+                newProducts.add(updatedProduct);
+            } else if (!oldProduct.getQuantity().equals(updatedProduct.getQuantity())) {
+                modifiedProducts.add(updatedProduct);
             }
-            if (!updatedProducts.isEmpty()) {
-                deltaEventProducer.sendUpdateProductItemEvent(cartId, updatedProducts.toArray(new ProductItemDto[0]));
-            }
+            removedProducts.remove(oldProduct);
+        }
+
+        if (!newProducts.isEmpty()) {
+            deltaEventProducer.sendAddProductItemEvent(oldCart.getId(), newProducts.toArray(new ProductItemDto[0]));
+        }
+        if (!modifiedProducts.isEmpty()) {
+            deltaEventProducer.sendUpdateProductItemEvent(oldCart.getId(), modifiedProducts.toArray(new ProductItemDto[0]));
         }
         if (!removedProducts.isEmpty()) {
-            deltaEventProducer.sendRemoveProductItemEvent(cartId, removedProducts.stream()
+            deltaEventProducer.sendRemoveProductItemEvent(oldCart.getId(), removedProducts.stream()
                     .map(ProductItemDto::getProductId).toArray(Long[]::new));
+        }
+    }
+
+    private void sendDeltaUpdateForDiscounts(CartDto oldCart, CartDto newCart) {
+        Set<String> addedDiscounts = new HashSet<>(newCart.getDiscounts());
+        addedDiscounts.removeAll(oldCart.getDiscounts());
+        Set<String> removedDiscounts = new HashSet<>(oldCart.getDiscounts());
+        removedDiscounts.removeAll(newCart.getDiscounts());
+
+        if (!addedDiscounts.isEmpty()) {
+            deltaEventProducer.sendAddDiscountEvent(newCart.getId(), addedDiscounts.toArray(new String[0]));
+        }
+        if (!removedDiscounts.isEmpty()) {
+            deltaEventProducer.sendRemoveDiscountEvent(newCart.getId(), removedDiscounts.toArray(new String[0]));
         }
     }
 

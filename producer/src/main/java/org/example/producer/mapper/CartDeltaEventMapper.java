@@ -16,6 +16,6 @@ public interface CartDeltaEventMapper {
     CartFactEvent toEvent (CartDto cartDto, String reason);
     DeleteCartDeltaEvent toEvent (Long id);
     ModifyProductItemCartDeltaEvent toEvent (Long id, List<ProductItemDto> products, String reason);
-    RemoveProductItemCartDeltaEvent toEvent (Long id, List<Long> productId);
+    RemoveProductItemCartDeltaEvent toEvent (Long id, List<Long> productIds);
     DiscountCartDeltaEvent toDiscountEvent (Long id, List<String> discounts, String reason);
 }

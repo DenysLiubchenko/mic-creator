@@ -1,4 +1,4 @@
-package org.example.service.service.impl;
+package org.example.service.service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.domain.dto.DiscountDto;

@@ -33,7 +33,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Cart'
       responses:
-        '204':
+        '201':
           description: Cart successfully created and saved.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
@@ -64,7 +64,23 @@ paths:
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
-  /cart/{cartId}/products:
+    delete:
+      tags:
+        - Cart
+      summary: Delete cart
+      operationId: deleteCart
+      description: Deletes an existing cart by its ID.
+      parameters:
+        - $ref: '#/components/parameters/CartId'
+      responses:
+        '204':
+          description: Cart successfully deleted.
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+
+  /cart/{cartId}/product:
     patch:
       tags:
         - Cart
@@ -88,7 +104,7 @@ paths:
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
-  /cart/{cartId}/products/remove:
+  /cart/{cartId}/product/remove:
     patch:
       tags:
         - Cart
@@ -108,7 +124,7 @@ paths:
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
-  /cart/{cartId}/discounts:
+  /cart/{cartId}/discount:
     patch:
       tags:
         - Cart
@@ -128,7 +144,7 @@ paths:
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
-  /cart/{cartId}/discounts/remove:
+  /cart/{cartId}/discount/remove:
     patch:
       tags:
         - Cart
@@ -148,22 +164,6 @@ paths:
         '409':
           $ref: '#/components/responses/ConflictResponse'
 
-    delete:
-      tags:
-        - Cart
-      summary: Delete cart
-      operationId: deleteCart
-      description: Deletes an existing cart by its ID.
-      parameters:
-        - $ref: '#/components/parameters/CartId'
-      responses:
-        '204':
-          description: Cart successfully deleted.
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
-
   /product:
     post:
       tags:
@@ -177,7 +177,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Product'
       responses:
-        '204':
+        '201':
           description: Product successfully created and saved.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
@@ -197,7 +197,7 @@ paths:
             schema:
               $ref: '#/components/schemas/Discount'
       responses:
-        '204':
+        '201':
           description: Discount successfully created and saved.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
@@ -345,6 +345,7 @@ components:
         name:
           type: string
           description: The name of the product.
+          pattern: '^(?!\s*$).+'
           nullable: false
           minLength: 1
         cost:
