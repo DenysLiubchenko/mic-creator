@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.api.ModelUtils;
 import org.example.api.handler.CustomExceptionHandler;
 import org.example.api.mapper.DiscountDtoMapper;
+import org.example.domain.exception.ConflictException;
 import org.example.domain.service.DiscountService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import java.time.ZoneOffset;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -64,5 +66,19 @@ class DiscountControllerTest {
         mockMvc.perform(post("/discount")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(discountDTO))).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void saveDiscount_withConflictException_SendsConflictTest() throws Exception {
+        // Given
+        var discountDTO = ModelUtils.getDiscountDTO();
+        var discountDto = ModelUtils.getDiscountDto();
+        given(discountDtoMapper.toDto(discountDTO)).willReturn(discountDto);
+        willThrow(ConflictException.class).given(discountService).save(discountDto);
+
+        // When
+        mockMvc.perform(post("/discount")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(discountDTO))).andExpect(status().isConflict());
     }
 }

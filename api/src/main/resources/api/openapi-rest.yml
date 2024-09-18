@@ -37,8 +37,8 @@ paths:
           description: Cart successfully created and saved.
         '400':
           $ref: '#/components/responses/BadRequestResponse'
-        '409':
-          $ref: '#/components/responses/ConflictResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
 
   /cart/{cartId}:
     put:
@@ -61,8 +61,6 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-        '409':
-          $ref: '#/components/responses/ConflictResponse'
 
     delete:
       tags:
@@ -75,10 +73,10 @@ paths:
       responses:
         '204':
           description: Cart successfully deleted.
-        '404':
-          $ref: '#/components/responses/NotFoundResponse'
         '400':
           $ref: '#/components/responses/BadRequestResponse'
+        '404':
+          $ref: '#/components/responses/NotFoundResponse'
 
   /cart/{cartId}/product:
     patch:
@@ -101,8 +99,6 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-        '409':
-          $ref: '#/components/responses/ConflictResponse'
 
   /cart/{cartId}/product/remove:
     patch:
@@ -121,8 +117,6 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-        '409':
-          $ref: '#/components/responses/ConflictResponse'
 
   /cart/{cartId}/discount:
     patch:
@@ -141,8 +135,6 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-        '409':
-          $ref: '#/components/responses/ConflictResponse'
 
   /cart/{cartId}/discount/remove:
     patch:
@@ -161,8 +153,6 @@ paths:
           $ref: '#/components/responses/BadRequestResponse'
         '404':
           $ref: '#/components/responses/NotFoundResponse'
-        '409':
-          $ref: '#/components/responses/ConflictResponse'
 
   /product:
     post:

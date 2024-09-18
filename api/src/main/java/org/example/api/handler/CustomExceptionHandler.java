@@ -3,6 +3,7 @@ package org.example.api.handler;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.example.domain.exception.ConflictException;
 import org.example.domain.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -62,5 +63,20 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
                                                                            WebRequest webRequest) {
         log.warn(ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+
+    /**
+     * Method intercept exception {@link ConflictException}.
+     *
+     * @param ex          The ConflictException instance that occurred.
+     * @param webRequest The WebRequest associated with the request.
+     * @return A ResponseEntity containing the ExceptionResponse with HttpStatus.CONFLICT.
+     */
+    @ExceptionHandler(ConflictException.class)
+    public final ResponseEntity<Object> handleConstraintViolationException(ConflictException ex,
+                                                                           WebRequest webRequest) {
+        log.warn(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 }

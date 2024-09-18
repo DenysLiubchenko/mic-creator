@@ -6,6 +6,7 @@ import org.example.dao.adapters.DiscountJpaAdapter;
 import org.example.dao.entity.DiscountEntity;
 import org.example.dao.mapper.DiscountEntityMapper;
 import org.example.domain.dto.DiscountDto;
+import org.example.domain.exception.ConflictException;
 import org.example.domain.repository.DiscountRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class DiscountRepositoryImpl implements DiscountRepository {
 
     @Override
     public DiscountDto save(DiscountDto discountDto) {
+        if (discountJpaAdapter.existsById(discountDto.getCode())) {
+            throw new ConflictException("Discount code was already registered.");
+        }
         DiscountEntity discountEntity = discountEntityMapper.fromDto(discountDto);
         DiscountEntity saved = discountJpaAdapter.save(discountEntity);
         discountJpaAdapter.flush();

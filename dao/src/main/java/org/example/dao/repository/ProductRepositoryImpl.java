@@ -6,6 +6,7 @@ import org.example.dao.adapters.ProductJpaAdapter;
 import org.example.dao.entity.ProductEntity;
 import org.example.dao.mapper.ProductEntityMapper;
 import org.example.domain.dto.ProductDto;
+import org.example.domain.exception.ConflictException;
 import org.example.domain.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     @Override
     public ProductDto save(ProductDto productDto) {
+        if (productJpaAdapter.existsByName(productDto.getName())) {
+            throw new ConflictException("Product with name " + productDto.getName() + " already exists");
+        }
         ProductEntity productEntity = productEntityMapper.fromDto(productDto);
         ProductEntity saved = productJpaAdapter.save(productEntity);
         productJpaAdapter.flush();
