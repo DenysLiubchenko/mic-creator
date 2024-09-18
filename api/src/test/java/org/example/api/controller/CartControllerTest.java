@@ -1,10 +1,10 @@
-package org.example.core.controller;
+package org.example.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.core.ModelUtils;
-import org.example.core.handler.CustomExceptionHandler;
-import org.example.core.mapper.CartDtoMapper;
-import org.example.core.mapper.ProductItemDtoMapper;
+import org.example.api.ModelUtils;
+import org.example.api.handler.CustomExceptionHandler;
+import org.example.api.mapper.CartDtoMapper;
+import org.example.api.mapper.ProductItemDtoMapper;
 import org.example.domain.exception.NotFoundException;
 import org.example.domain.service.CartService;
 import org.junit.jupiter.api.Test;

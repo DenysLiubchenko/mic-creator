@@ -1,6 +1,6 @@
-package org.example.core.mapper;
+package org.example.api.mapper;
 
-import org.example.core.generated.model.ProductItemDTO;
+import org.example.api.generated.model.ProductItemDTO;
 import org.example.domain.dto.ProductItemDto;
 import org.mapstruct.Mapper;
 

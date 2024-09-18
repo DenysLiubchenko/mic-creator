@@ -1,9 +1,9 @@
-package org.example.core.controller;
+package org.example.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.core.ModelUtils;
-import org.example.core.handler.CustomExceptionHandler;
-import org.example.core.mapper.DiscountDtoMapper;
+import org.example.api.ModelUtils;
+import org.example.api.handler.CustomExceptionHandler;
+import org.example.api.mapper.DiscountDtoMapper;
 import org.example.domain.service.DiscountService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

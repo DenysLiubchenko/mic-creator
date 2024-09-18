@@ -7,10 +7,10 @@
         <artifactId>mic-creator</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>core</artifactId>
+    <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>core</name>
-    <description>core</description>
+    <name>api</name>
+    <description>api</description>
 
     <properties>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>

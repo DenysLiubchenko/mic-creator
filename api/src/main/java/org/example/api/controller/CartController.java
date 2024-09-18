@@ -1,11 +1,11 @@
-package org.example.core.controller;
+package org.example.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.core.generated.api.CartApi;
-import org.example.core.generated.model.CartDTO;
-import org.example.core.generated.model.ProductItemDTO;
-import org.example.core.mapper.CartDtoMapper;
-import org.example.core.mapper.ProductItemDtoMapper;
+import org.example.api.generated.api.CartApi;
+import org.example.api.generated.model.CartDTO;
+import org.example.api.generated.model.ProductItemDTO;
+import org.example.api.mapper.CartDtoMapper;
+import org.example.api.mapper.ProductItemDtoMapper;
 import org.example.domain.dto.CartDto;
 import org.example.domain.dto.ProductItemDto;
 import org.example.domain.service.CartService;

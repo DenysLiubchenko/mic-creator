@@ -1,9 +1,9 @@
-package org.example.core;
+package org.example.api;
 
-import org.example.core.generated.model.DiscountDTO;
-import org.example.core.generated.model.ProductDTO;
-import org.example.core.generated.model.CartDTO;
-import org.example.core.generated.model.ProductItemDTO;
+import org.example.api.generated.model.DiscountDTO;
+import org.example.api.generated.model.ProductDTO;
+import org.example.api.generated.model.CartDTO;
+import org.example.api.generated.model.ProductItemDTO;
 import org.example.domain.dto.CartDto;
 import org.example.domain.dto.DiscountDto;
 import org.example.domain.dto.ProductDto;

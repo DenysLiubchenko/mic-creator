@@ -16,7 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>core</module>
+        <module>api</module>
         <module>service</module>
         <module>domain</module>
         <module>dao</module>

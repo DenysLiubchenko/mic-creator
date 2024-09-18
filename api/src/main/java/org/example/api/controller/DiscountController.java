@@ -1,10 +1,10 @@
-package org.example.core.controller;
+package org.example.api.controller;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
-import org.example.core.generated.api.DiscountApi;
-import org.example.core.generated.model.DiscountDTO;
-import org.example.core.mapper.DiscountDtoMapper;
+import org.example.api.generated.api.DiscountApi;
+import org.example.api.generated.model.DiscountDTO;
+import org.example.api.mapper.DiscountDtoMapper;
 import org.example.domain.dto.DiscountDto;
 import org.example.domain.service.DiscountService;
 import org.springframework.web.bind.annotation.CrossOrigin;

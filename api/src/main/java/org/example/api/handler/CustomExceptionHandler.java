@@ -1,4 +1,4 @@
-package org.example.core.handler;
+package org.example.api.handler;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
