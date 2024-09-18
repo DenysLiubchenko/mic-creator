@@ -39,7 +39,7 @@ public class KafkaConfig {
         config.put(ProducerConfig.LINGER_MS_CONFIG, 10);
         config.put(ProducerConfig.BATCH_SIZE_CONFIG, 32 * 1024);
         config.put(KafkaAvroSerializerConfig.SCHEMA_REGISTRY_URL_CONFIG, schemaRegistry);
-        config.put(KafkaAvroSerializerConfig.AUTO_REGISTER_SCHEMAS, true);
+        config.put(KafkaAvroSerializerConfig.AUTO_REGISTER_SCHEMAS, false);
         config.put(KafkaAvroSerializerConfig.VALUE_SUBJECT_NAME_STRATEGY, TopicRecordNameStrategy.class.getName());
         return config;
     }

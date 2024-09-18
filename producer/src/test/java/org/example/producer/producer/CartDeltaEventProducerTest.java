@@ -73,28 +73,28 @@ public class CartDeltaEventProducerTest {
     @Test
     void sendAddProductItemEventTest() {
         // Given
-        ModifyProductItemCartDeltaEvent event = ModelUtils.getModifyProductItemCartDeltaEvent(EventReason.ADD_NEW_PRODUCT_ITEM.name());
-        given(cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.ADD_NEW_PRODUCT_ITEM.name())).willReturn(event);
+        ModifyProductItemCartDeltaEvent event = ModelUtils.getModifyProductItemCartDeltaEvent(EventReason.ADD_PRODUCT_ITEM.name());
+        given(cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name())).willReturn(event);
 
         // When
         cartDeltaEventProducer.sendAddProductItemEvent(cartId, productItemDtos);
 
         // Then
-        then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.ADD_NEW_PRODUCT_ITEM.name());
+        then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name());
         then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(event.getId()), event);
     }
 
     @Test
     void sendUpdateProductItemEventTest() {
         // Given
-        ModifyProductItemCartDeltaEvent event = ModelUtils.getModifyProductItemCartDeltaEvent(EventReason.CHANGED_QUANTITY_OF_PRODUCT_ITEM.name());
-        given(cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.CHANGED_QUANTITY_OF_PRODUCT_ITEM.name())).willReturn(event);
+        ModifyProductItemCartDeltaEvent event = ModelUtils.getModifyProductItemCartDeltaEvent(EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
+        given(cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name())).willReturn(event);
 
         // When
         cartDeltaEventProducer.sendUpdateProductItemEvent(cartId, productItemDtos);
 
         // Then
-        then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.CHANGED_QUANTITY_OF_PRODUCT_ITEM.name());
+        then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
         then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(event.getId()), event);
     }
 

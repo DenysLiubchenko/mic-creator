@@ -41,14 +41,14 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
 
     @Override
     public void sendAddProductItemEvent(Long cartId, ProductItemDto... productItemDtos) {
-        ModifyProductItemCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.ADD_NEW_PRODUCT_ITEM.name());
+        ModifyProductItemCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name());
         cartKafkaTemplate.send(CART_TOPIC, String.valueOf(event.getId()), event);
         log.info("Sent cart add product {} delta event to topic {}", event, CART_TOPIC);
     }
 
     @Override
     public void sendUpdateProductItemEvent(Long cartId, ProductItemDto... productItemDtos) {
-        ModifyProductItemCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.CHANGED_QUANTITY_OF_PRODUCT_ITEM.name());
+        ModifyProductItemCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
         cartKafkaTemplate.send(CART_TOPIC, String.valueOf(event.getId()), event);
         log.info("Sent cart update product {} delta event to topic {}", event, CART_TOPIC);
     }
@@ -62,14 +62,14 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
 
     @Override
     public void sendAddDiscountEvent(Long cartId, String... codes) {
-        DiscountCartDeltaEvent event = cartDeltaEventMapper.toDiscountEvent(cartId, List.of(codes), EventReason.CREATE.name());
+        DiscountCartDeltaEvent event = cartDeltaEventMapper.toDiscountEvent(cartId, List.of(codes), EventReason.ADD_DISCOUNT.name());
         cartKafkaTemplate.send(CART_TOPIC, String.valueOf(event.getId()), event);
         log.info("Sent {} event to topic {}", event, CART_TOPIC);
     }
 
     @Override
     public void sendRemoveDiscountEvent(Long cartId, String... codes) {
-        DiscountCartDeltaEvent event = cartDeltaEventMapper.toDiscountEvent(cartId, List.of(codes), EventReason.DELETE.name());
+        DiscountCartDeltaEvent event = cartDeltaEventMapper.toDiscountEvent(cartId, List.of(codes), EventReason.REMOVE_DISCOUNT.name());
         cartKafkaTemplate.send(CART_TOPIC, String.valueOf(event.getId()), event);
         log.info("Sent {} event to topic {}", event, CART_TOPIC);
     }
