@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.confluent.kafka.schemaregistry.client.rest.entities.SchemaString;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.apache.avro.Schema;
 import org.awaitility.Awaitility;
 import org.example.boot.BootApplication;
 import org.example.boot.ModelUtils;
@@ -76,15 +77,20 @@ public class DiscountIT {
         WireMock.resetAllScenarios();
         WireMock.resetToDefault();
 
-        registerSchema(1, DiscountFactEvent.getClassSchema().toString(), DiscountFactEvent.getClassSchema().getFullName());
+        registerSchema(1, DISCOUNT_FACT_TOPIC, DiscountFactEvent.getClassSchema());
+        registerSchema(2, DISCOUNT_DELTA_TOPIC, DiscountFactEvent.getClassSchema());
     }
 
-    private void registerSchema(int schemaId, String schema, String schemaName) throws IOException {
-        stubFor(post(urlPathMatching("/subjects/" + DISCOUNT_FACT_TOPIC + "-" + schemaName)).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody("{\"id\":" + schemaId + "}")));
-        stubFor(post(urlPathMatching("/subjects/" + DISCOUNT_DELTA_TOPIC + "-" + schemaName)).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody("{\"id\":" + schemaId + "}")));
+    private void registerSchema(int schemaId, String topic, Schema schema) throws IOException {
+        stubFor(post(urlPathMatching("/subjects/" + topic + "-" + schema.getFullName()))
+                .willReturn(aResponse().withStatus(200)
+                        .withHeader("Content-Type", "application/json")
+                        .withBody("{\"id\":" + schemaId + "}")));
 
-        final SchemaString schemaString = new SchemaString(schema);
-        stubFor(get(urlPathMatching("/schemas/ids/" + schemaId)).willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json").withBody(schemaString.toJson())));
+        final SchemaString schemaString = new SchemaString(schema.toString());
+        stubFor(get(urlPathMatching("/schemas/ids/" + schemaId))
+                .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json")
+                        .withBody(schemaString.toJson())));
     }
 
     @Test

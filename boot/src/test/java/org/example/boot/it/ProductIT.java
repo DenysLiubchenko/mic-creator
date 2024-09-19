@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.confluent.kafka.schemaregistry.client.rest.entities.SchemaString;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
+import org.apache.avro.Schema;
 import org.awaitility.Awaitility;
 import org.example.boot.BootApplication;
 import org.example.boot.ModelUtils;
@@ -78,20 +79,17 @@ public class ProductIT {
         WireMock.resetAllScenarios();
         WireMock.resetToDefault();
 
-        registerSchema(1, ProductFactEvent.getClassSchema().toString(), ProductFactEvent.getClassSchema().getFullName());
+        registerSchema(1, PRODUCT_FACT_TOPIC, ProductFactEvent.getClassSchema());
+        registerSchema(2, PRODUCT_DELTA_TOPIC, ProductFactEvent.getClassSchema());
     }
 
-    private void registerSchema(int schemaId, String schema, String schemaName) throws IOException {
-        stubFor(post(urlPathMatching("/subjects/" + PRODUCT_FACT_TOPIC + "-" + schemaName))
-                .willReturn(aResponse().withStatus(200)
-                        .withHeader("Content-Type", "application/json")
-                        .withBody("{\"id\":" + schemaId + "}")));
-        stubFor(post(urlPathMatching("/subjects/" + PRODUCT_DELTA_TOPIC + "-" + schemaName))
+    private void registerSchema(int schemaId, String topic, Schema schema) throws IOException {
+        stubFor(post(urlPathMatching("/subjects/" + topic + "-" + schema.getFullName()))
                 .willReturn(aResponse().withStatus(200)
                         .withHeader("Content-Type", "application/json")
                         .withBody("{\"id\":" + schemaId + "}")));
 
-        final SchemaString schemaString = new SchemaString(schema);
+        final SchemaString schemaString = new SchemaString(schema.toString());
         stubFor(get(urlPathMatching("/schemas/ids/" + schemaId))
                 .willReturn(aResponse().withStatus(200).withHeader("Content-Type", "application/json")
                         .withBody(schemaString.toJson())));
