@@ -42,3 +42,13 @@ create table carts_discounts
 );
 
 create index ix_carts_discounts_discount_code on carts_discounts (discount_code);
+
+CREATE TABLE outbox
+(
+    id           SERIAL,
+    key          VARCHAR(255) NOT NULL,
+    destination       VARCHAR(255) NOT NULL,
+    payload      BYTEA        NOT NULL,
+    created_at   TIMESTAMPTZ DEFAULT NOW(),
+    constraint pk_outbox_fact primary key (id)
+);

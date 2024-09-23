@@ -15,7 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.List;
 
@@ -28,8 +27,6 @@ public class CartDeltaEventProducerTest {
     @Mock
     private CartDeltaEventMapper cartDeltaEventMapper;
 
-    @Mock
-    private KafkaTemplate<String, Object> cartKafkaTemplate;
 
     @InjectMocks
     private CartDeltaEventProducerImpl cartDeltaEventProducer;
@@ -53,7 +50,6 @@ public class CartDeltaEventProducerTest {
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartDto, EventReason.CREATE.name());
-        then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(cartFactEvent.getId()), cartFactEvent);
     }
 
     @Test
@@ -67,7 +63,6 @@ public class CartDeltaEventProducerTest {
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId);
-        then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(deleteCartEvent.getId()), deleteCartEvent);
     }
 
     @Test
@@ -81,7 +76,6 @@ public class CartDeltaEventProducerTest {
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name());
-        then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(event.getId()), event);
     }
 
     @Test
@@ -95,7 +89,6 @@ public class CartDeltaEventProducerTest {
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
-        then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(event.getId()), event);
     }
 
     @Test
@@ -109,7 +102,6 @@ public class CartDeltaEventProducerTest {
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos[0].getProductId()));
-        then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(event.getId()), event);
     }
 
     @Test
@@ -123,7 +115,6 @@ public class CartDeltaEventProducerTest {
 
         // Then
         then(cartDeltaEventMapper).should().toDiscountEvent(cartId, List.of(discountCodes), EventReason.CREATE.name());
-        then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(event.getId()), event);
     }
 
     @Test
@@ -137,7 +128,6 @@ public class CartDeltaEventProducerTest {
 
         // Then
         then(cartDeltaEventMapper).should().toDiscountEvent(cartId, List.of(discountCodes), EventReason.DELETE.name());
-        then(cartKafkaTemplate).should().send(CART_TOPIC, String.valueOf(event.getId()), event);
     }
 }
 

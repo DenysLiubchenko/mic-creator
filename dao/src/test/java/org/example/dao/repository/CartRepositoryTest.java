@@ -1,9 +1,9 @@
 package org.example.dao.repository;
 
 import org.example.dao.ModelUtils;
-import org.example.dao.adapters.CartJpaAdapter;
-import org.example.dao.adapters.DiscountJpaAdapter;
-import org.example.dao.adapters.ProductJpaAdapter;
+import org.example.dao.adapter.CartJpaAdapter;
+import org.example.dao.adapter.DiscountJpaAdapter;
+import org.example.dao.adapter.ProductJpaAdapter;
 import org.example.dao.entity.CartEntity;
 import org.example.dao.entity.ProductItemEntity;
 import org.example.dao.entity.ProductItemId;

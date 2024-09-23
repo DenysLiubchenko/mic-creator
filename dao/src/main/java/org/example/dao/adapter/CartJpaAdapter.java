@@ -1,4 +1,4 @@
-package org.example.dao.adapters;
+package org.example.dao.adapter;
 
 import org.example.dao.entity.CartEntity;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,7 +1,7 @@
 package org.example.dao.repository;
 
 import org.example.dao.ModelUtils;
-import org.example.dao.adapters.ProductJpaAdapter;
+import org.example.dao.adapter.ProductJpaAdapter;
 import org.example.dao.entity.ProductEntity;
 import org.example.dao.mapper.ProductEntityMapper;
 import org.example.domain.dto.ProductDto;

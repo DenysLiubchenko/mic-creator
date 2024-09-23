@@ -1,0 +1,331 @@
+[
+  {
+    "class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "type": "sink",
+    "version": "10.0.0"
+  },
+  {
+    "class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+    "type": "source",
+    "version": "10.0.0"
+  },
+  {
+    "class": "org.apache.kafka.connect.mirror.MirrorCheckpointConnector",
+    "type": "source",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.mirror.MirrorHeartbeatConnector",
+    "type": "source",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.mirror.MirrorSourceConnector",
+    "type": "source",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "io.confluent.connect.transforms.Drop$Key",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.Drop$Value",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.ExtractTopic$Header",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.ExtractTopic$Key",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.ExtractTopic$Value",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.Filter$Key",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.Filter$Value",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.Flatten$Key",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.Flatten$Value",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.GzipDecompress$Key",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.GzipDecompress$Value",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.MessageTimestampRouter",
+    "type": "transformation"
+  },
+  {
+    "class": "io.confluent.connect.transforms.TombstoneHandler",
+    "type": "transformation"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.Cast$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.Cast$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.DropHeaders",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.ExtractField$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.ExtractField$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.Filter",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.Flatten$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.Flatten$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.HeaderFrom$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.HeaderFrom$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.HoistField$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.HoistField$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.InsertField$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.InsertField$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.InsertHeader",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.MaskField$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.MaskField$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.RegexRouter",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.ReplaceField$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.ReplaceField$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.SetSchemaMetadata$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.SetSchemaMetadata$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.TimestampConverter$Key",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.TimestampConverter$Value",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.TimestampRouter",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.ValueToKey",
+    "type": "transformation",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.predicates.HasHeaderKey",
+    "type": "predicate",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.predicates.RecordIsTombstone",
+    "type": "predicate",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.transforms.predicates.TopicNameMatches",
+    "type": "predicate",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "io.confluent.connect.avro.AvroConverter",
+    "type": "converter"
+  },
+  {
+    "class": "io.confluent.connect.json.JsonSchemaConverter",
+    "type": "converter"
+  },
+  {
+    "class": "io.confluent.connect.protobuf.ProtobufConverter",
+    "type": "converter"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.BooleanConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.DoubleConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.FloatConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.IntegerConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.LongConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.ShortConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.json.JsonConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.storage.StringConverter",
+    "type": "converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.BooleanConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.ByteArrayConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.DoubleConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.FloatConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.IntegerConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.LongConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.converters.ShortConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.json.JsonConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.storage.SimpleHeaderConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  },
+  {
+    "class": "org.apache.kafka.connect.storage.StringConverter",
+    "type": "header_converter",
+    "version": "7.7.1-ccs"
+  }
+]

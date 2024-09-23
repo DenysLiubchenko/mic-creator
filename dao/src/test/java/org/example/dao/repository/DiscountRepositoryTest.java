@@ -1,7 +1,7 @@
 package org.example.dao.repository;
 
 import org.example.dao.ModelUtils;
-import org.example.dao.adapters.DiscountJpaAdapter;
+import org.example.dao.adapter.DiscountJpaAdapter;
 import org.example.dao.entity.DiscountEntity;
 import org.example.dao.mapper.DiscountEntityMapper;
 import org.example.domain.dto.DiscountDto;

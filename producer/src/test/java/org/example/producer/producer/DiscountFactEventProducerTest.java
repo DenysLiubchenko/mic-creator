@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.kafka.core.KafkaTemplate;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -19,9 +18,6 @@ import static org.mockito.BDDMockito.then;
 public class DiscountFactEventProducerTest {
     @Mock
     private DiscountFactEventMapper discountFactEventMapper;
-
-    @Mock
-    private KafkaTemplate<String, Object> discountKafkaTemplate;
 
     @InjectMocks
     private DiscountFactEventProducerImpl discountFactEventProducer;
@@ -40,6 +36,5 @@ public class DiscountFactEventProducerTest {
 
         // Then
         then(discountFactEventMapper).should().toEvent(discountDto, EventReason.CREATE.name());
-        then(discountKafkaTemplate).should().send(DISCOUNT_TOPIC, discountFactEvent.getCode(), discountFactEvent);
     }
 }

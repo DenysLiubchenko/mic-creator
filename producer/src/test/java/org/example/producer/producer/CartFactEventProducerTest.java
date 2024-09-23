@@ -10,7 +10,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.kafka.core.KafkaTemplate;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -21,8 +20,6 @@ public class CartFactEventProducerTest {
     @Mock
     private CartFactEventMapper cartFactEventMapper;
 
-    @Mock
-    private KafkaTemplate<String, Object> kafkaTemplate;
 
     @InjectMocks
     private CartFactEventProducerImpl cartFactEventProducer;
@@ -41,7 +38,6 @@ public class CartFactEventProducerTest {
 
         // Then
         then(cartFactEventMapper).should().toEvent(cartDto, EventReason.CREATE.name());
-        then(kafkaTemplate).should().send(CART_TOPIC, String.valueOf(cartFactEvent.getId()), cartFactEvent);
     }
 
     @Test
@@ -55,7 +51,6 @@ public class CartFactEventProducerTest {
 
         // Then
         then(cartFactEventMapper).should().toEvent(cartDto, EventReason.UPDATE.name());
-        then(kafkaTemplate).should().send(CART_TOPIC, String.valueOf(cartFactEvent.getId()), cartFactEvent);
     }
 
     @Test
@@ -69,7 +64,6 @@ public class CartFactEventProducerTest {
 
         // Then
         then(cartFactEventMapper).should().toEvent(cartDto, EventReason.DELETE.name());
-        then(kafkaTemplate).should().send(CART_TOPIC, String.valueOf(cartFactEvent.getId()), cartFactEvent);
     }
 }
 
