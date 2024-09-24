@@ -5,7 +5,7 @@ import org.example.domain.constant.EventReason;
 import org.example.domain.dto.ProductDto;
 import org.example.fact.ProductFactEvent;
 import org.example.producer.ModelUtils;
-import org.example.producer.adapter.OutBoxRepository;
+import org.example.producer.adapter.OutBoxJpaAdapter;
 import org.example.producer.entity.OutBoxEntity;
 import org.example.producer.mapper.ProductFactEventMapper;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class ProductDeltaEventProducerTest {
     private ProductFactEventMapper productFactEventMapper;
 
     @Mock
-    private OutBoxRepository outBoxRepository;
+    private OutBoxJpaAdapter outBoxJpaAdapter;
 
     @Mock
     private KafkaAvroSerializer kafkaAvroSerializer;
@@ -50,7 +50,7 @@ public class ProductDeltaEventProducerTest {
         // Then
         then(productFactEventMapper).should().toEvent(productDto, EventReason.CREATE.name());
         then(kafkaAvroSerializer).should().serialize(PRODUCT_TOPIC + productFactEvent.getSchema().getFullName(), productFactEvent);
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(productFactEvent.getId()))
                 .destination(PRODUCT_TOPIC)
                 .payload(serializedEvent)

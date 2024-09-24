@@ -12,7 +12,7 @@ import org.example.domain.dto.CartDto;
 import org.example.domain.dto.ProductItemDto;
 import org.example.domain.producer.CartDeltaEventProducer;
 import org.example.fact.CartFactEvent;
-import org.example.producer.adapter.OutBoxRepository;
+import org.example.producer.adapter.OutBoxJpaAdapter;
 import org.example.producer.entity.OutBoxEntity;
 import org.example.producer.mapper.CartDeltaEventMapper;
 import org.springframework.stereotype.Service;
@@ -25,15 +25,15 @@ import java.util.List;
 public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
     private final String CART_TOPIC = "cart-delta";
     private final CartDeltaEventMapper cartDeltaEventMapper;
-    private final OutBoxRepository outBoxRepository;
+    private final OutBoxJpaAdapter outBoxJpaAdapter;
     private final KafkaAvroSerializer kafkaAvroSerializer;
 
     @Override
     public void sendCreateEvent(CartDto cartDto) {
         CartFactEvent event = cartDeltaEventMapper.toEvent(cartDto, EventReason.CREATE.name());
-        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC+event.getSchema().getFullName(), event);
+        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
@@ -44,9 +44,9 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
     @Override
     public void sendDeleteEvent(Long cartId) {
         DeleteCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId);
-        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC+event.getSchema().getFullName(), event);
+        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
@@ -57,9 +57,9 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
     @Override
     public void sendAddProductItemEvent(Long cartId, ProductItemDto... productItemDtos) {
         ModifyProductItemCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name());
-        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC+event.getSchema().getFullName(), event);
+        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
@@ -70,9 +70,9 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
     @Override
     public void sendUpdateProductItemEvent(Long cartId, ProductItemDto... productItemDtos) {
         ModifyProductItemCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
-        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC+event.getSchema().getFullName(), event);
+        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
@@ -83,9 +83,9 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
     @Override
     public void sendRemoveProductItemEvent(Long cartId, Long... productIds) {
         RemoveProductItemCartDeltaEvent event = cartDeltaEventMapper.toEvent(cartId, List.of(productIds));
-        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC+event.getSchema().getFullName(), event);
+        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
@@ -96,9 +96,9 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
     @Override
     public void sendAddDiscountEvent(Long cartId, String... codes) {
         DiscountCartDeltaEvent event = cartDeltaEventMapper.toDiscountEvent(cartId, List.of(codes), EventReason.ADD_DISCOUNT.name());
-        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC+event.getSchema().getFullName(), event);
+        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
@@ -109,9 +109,9 @@ public class CartDeltaEventProducerImpl implements CartDeltaEventProducer {
     @Override
     public void sendRemoveDiscountEvent(Long cartId, String... codes) {
         DiscountCartDeltaEvent event = cartDeltaEventMapper.toDiscountEvent(cartId, List.of(codes), EventReason.REMOVE_DISCOUNT.name());
-        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC+event.getSchema().getFullName(), event);
+        byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)

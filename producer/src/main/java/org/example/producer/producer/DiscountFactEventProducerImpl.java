@@ -7,7 +7,7 @@ import org.example.domain.constant.EventReason;
 import org.example.domain.dto.DiscountDto;
 import org.example.domain.producer.DiscountFactEventProducer;
 import org.example.fact.DiscountFactEvent;
-import org.example.producer.adapter.OutBoxRepository;
+import org.example.producer.adapter.OutBoxJpaAdapter;
 import org.example.producer.entity.OutBoxEntity;
 import org.example.producer.mapper.DiscountFactEventMapper;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class DiscountFactEventProducerImpl implements DiscountFactEventProducer {
     private final String DISCOUNT_TOPIC = "discount-fact";
     private final DiscountFactEventMapper discountFactEventMapper;
-    private final OutBoxRepository outBoxRepository;
+    private final OutBoxJpaAdapter outBoxJpaAdapter;
     private final KafkaAvroSerializer kafkaAvroSerializer;
 
     @Override
@@ -26,7 +26,7 @@ public class DiscountFactEventProducerImpl implements DiscountFactEventProducer 
         DiscountFactEvent event = discountFactEventMapper.toEvent(discountDto, EventReason.CREATE.name());
         byte[] payload = kafkaAvroSerializer.serialize(DISCOUNT_TOPIC, event);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getCode()))
                 .destination(DISCOUNT_TOPIC)
                 .payload(payload)

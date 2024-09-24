@@ -5,7 +5,7 @@ import org.example.domain.constant.EventReason;
 import org.example.domain.dto.DiscountDto;
 import org.example.fact.DiscountFactEvent;
 import org.example.producer.ModelUtils;
-import org.example.producer.adapter.OutBoxRepository;
+import org.example.producer.adapter.OutBoxJpaAdapter;
 import org.example.producer.entity.OutBoxEntity;
 import org.example.producer.mapper.DiscountFactEventMapper;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ public class DiscountDeltaEventProducerTest {
     private DiscountFactEventMapper discountFactEventMapper;
 
     @Mock
-    private OutBoxRepository outBoxRepository;
+    private OutBoxJpaAdapter outBoxJpaAdapter;
 
     @Mock
     private KafkaAvroSerializer kafkaAvroSerializer;
@@ -50,7 +50,7 @@ public class DiscountDeltaEventProducerTest {
         then(discountFactEventMapper).should().toEvent(discountDto, EventReason.CREATE.name());
         then(kafkaAvroSerializer).should().serialize(DISCOUNT_TOPIC + discountFactEvent.getSchema().getFullName(), discountFactEvent);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(discountFactEvent.getCode()))
                 .destination(DISCOUNT_TOPIC)
                 .payload(serializedEvent)

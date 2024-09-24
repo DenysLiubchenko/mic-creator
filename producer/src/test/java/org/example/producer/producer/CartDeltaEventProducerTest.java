@@ -10,7 +10,7 @@ import org.example.domain.dto.CartDto;
 import org.example.domain.dto.ProductItemDto;
 import org.example.fact.CartFactEvent;
 import org.example.producer.ModelUtils;
-import org.example.producer.adapter.OutBoxRepository;
+import org.example.producer.adapter.OutBoxJpaAdapter;
 import org.example.producer.entity.OutBoxEntity;
 import org.example.producer.mapper.CartDeltaEventMapper;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,7 @@ public class CartDeltaEventProducerTest {
     private CartDeltaEventMapper cartDeltaEventMapper;
 
     @Mock
-    private OutBoxRepository outBoxRepository;
+    private OutBoxJpaAdapter outBoxJpaAdapter;
 
     @Mock
     private KafkaAvroSerializer kafkaAvroSerializer;
@@ -63,7 +63,7 @@ public class CartDeltaEventProducerTest {
         then(cartDeltaEventMapper).should().toEvent(cartDto, EventReason.CREATE.name());
         then(kafkaAvroSerializer).should().serialize(CART_TOPIC + cartFactEvent.getSchema().getFullName(), cartFactEvent);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(cartFactEvent.getId()))
                 .destination(CART_TOPIC)
                 .payload(serializedEvent)
@@ -85,7 +85,7 @@ public class CartDeltaEventProducerTest {
         then(cartDeltaEventMapper).should().toEvent(cartId);
         then(kafkaAvroSerializer).should().serialize(CART_TOPIC + deleteCartEvent.getSchema().getFullName(), deleteCartEvent);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(deleteCartEvent.getId()))
                 .destination(CART_TOPIC)
                 .payload(serializedEvent)
@@ -107,7 +107,7 @@ public class CartDeltaEventProducerTest {
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name());
         then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(serializedEvent)
@@ -129,7 +129,7 @@ public class CartDeltaEventProducerTest {
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
         then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(serializedEvent)
@@ -151,7 +151,7 @@ public class CartDeltaEventProducerTest {
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos[0].getProductId()));
         then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(serializedEvent)
@@ -173,7 +173,7 @@ public class CartDeltaEventProducerTest {
         then(cartDeltaEventMapper).should().toDiscountEvent(cartId, List.of(discountCodes), EventReason.ADD_DISCOUNT.name());
         then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(serializedEvent)
@@ -195,7 +195,7 @@ public class CartDeltaEventProducerTest {
         then(cartDeltaEventMapper).should().toDiscountEvent(cartId, List.of(discountCodes), EventReason.REMOVE_DISCOUNT.name());
         then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
 
-        then(outBoxRepository).should().save(OutBoxEntity.builder()
+        then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
                 .destination(CART_TOPIC)
                 .payload(serializedEvent)

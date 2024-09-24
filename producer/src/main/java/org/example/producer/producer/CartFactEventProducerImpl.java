@@ -7,7 +7,7 @@ import org.example.domain.constant.EventReason;
 import org.example.domain.dto.CartDto;
 import org.example.domain.producer.CartFactEventProducer;
 import org.example.fact.CartFactEvent;
-import org.example.producer.adapter.OutBoxRepository;
+import org.example.producer.adapter.OutBoxJpaAdapter;
 import org.example.producer.entity.OutBoxEntity;
 import org.example.producer.mapper.CartFactEventMapper;
 import org.springframework.stereotype.Service;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class CartFactEventProducerImpl implements CartFactEventProducer {
     private final String CART_TOPIC = "cart-fact";
     private final CartFactEventMapper cartFactEventMapper;
-    private final OutBoxRepository outBoxRepository;
+    private final OutBoxJpaAdapter outBoxJpaAdapter;
     private final KafkaAvroSerializer kafkaAvroSerializer;
 
     @Override
@@ -26,7 +26,7 @@ public class CartFactEventProducerImpl implements CartFactEventProducer {
         CartFactEvent cartFactEvent = cartFactEventMapper.toEvent(cartDto, EventReason.CREATE.name());
         byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC, cartFactEvent);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(cartFactEvent.getId()))
                         .destination(CART_TOPIC)
                 .payload(payload)
@@ -39,7 +39,7 @@ public class CartFactEventProducerImpl implements CartFactEventProducer {
         CartFactEvent cartFactEvent = cartFactEventMapper.toEvent(cartDto, EventReason.UPDATE.name());
         byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC, cartFactEvent);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(cartFactEvent.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
@@ -52,7 +52,7 @@ public class CartFactEventProducerImpl implements CartFactEventProducer {
         CartFactEvent cartFactEvent = cartFactEventMapper.toEvent(cartDto, EventReason.DELETE.name());
         byte[] payload = kafkaAvroSerializer.serialize(CART_TOPIC, cartFactEvent);
 
-        outBoxRepository.save(OutBoxEntity.builder()
+        outBoxJpaAdapter.save(OutBoxEntity.builder()
                 .key(String.valueOf(cartFactEvent.getId()))
                 .destination(CART_TOPIC)
                 .payload(payload)
