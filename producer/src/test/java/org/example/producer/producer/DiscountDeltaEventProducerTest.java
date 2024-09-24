@@ -41,14 +41,14 @@ public class DiscountDeltaEventProducerTest {
         // Given
         DiscountFactEvent discountFactEvent = ModelUtils.getDiscountFactEvent(EventReason.CREATE.name());
         given(discountFactEventMapper.toEvent(discountDto, EventReason.CREATE.name())).willReturn(discountFactEvent);
-        given(kafkaAvroSerializer.serialize(DISCOUNT_TOPIC + discountFactEvent.getSchema().getFullName(), discountFactEvent)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(DISCOUNT_TOPIC + "-" + discountFactEvent.getSchema().getFullName(), discountFactEvent)).willReturn(serializedEvent);
 
         // When
         discountDeltaEventProducer.sendCreateEvent(discountDto);
 
         // Then
         then(discountFactEventMapper).should().toEvent(discountDto, EventReason.CREATE.name());
-        then(kafkaAvroSerializer).should().serialize(DISCOUNT_TOPIC + discountFactEvent.getSchema().getFullName(), discountFactEvent);
+        then(kafkaAvroSerializer).should().serialize(DISCOUNT_TOPIC + "-" + discountFactEvent.getSchema().getFullName(), discountFactEvent);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(discountFactEvent.getCode()))

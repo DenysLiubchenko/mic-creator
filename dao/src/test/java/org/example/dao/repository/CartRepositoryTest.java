@@ -55,7 +55,8 @@ class CartRepositoryTest {
         // Given
         Long cartId = cartDto.getId();
         given(productJpaAdapter.existsById(productItemDto.getProductId())).willReturn(true);
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(cartEntityMapper.toDto(cartEntity)).willReturn(cartDto);
 
         // When
@@ -63,7 +64,8 @@ class CartRepositoryTest {
 
         // Then
         then(productJpaAdapter).should().existsById(productItemDto.getProductId());
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(cartJpaAdapter).should().flush();
         then(cartEntityMapper).should().toDto(cartEntity);
         assertThat(result).isEqualTo(cartDto);
@@ -79,7 +81,8 @@ class CartRepositoryTest {
         Long cartId = cartDto.getId();
         given(productJpaAdapter.existsById(productItemDto.getProductId())).willReturn(true);
         given(productItemEntityMapper.fromDto(productItemDto)).willReturn(productItemEntity);
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(cartEntityMapper.toDto(cartEntity)).willReturn(cartDto);
 
         // When
@@ -87,7 +90,8 @@ class CartRepositoryTest {
 
         // Then
         then(productJpaAdapter).should().existsById(productItemDto.getProductId());
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(cartJpaAdapter).should().flush();
         then(cartEntityMapper).should().toDto(cartEntity);
         assertThat(result).isEqualTo(cartDto);
@@ -113,7 +117,8 @@ class CartRepositoryTest {
         Long cartId = cartDto.getId();
         Long productId = 1L;
         given(productJpaAdapter.existsById(productId)).willReturn(true);
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(cartEntityMapper.toDto(cartEntity)).willReturn(cartDto);
 
         // When
@@ -121,7 +126,8 @@ class CartRepositoryTest {
 
         // Then
         then(productJpaAdapter).should().existsById(productId);
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(cartJpaAdapter).should().flush();
         then(cartEntityMapper).should().toDto(cartEntity);
         assertThat(result).isEqualTo(cartDto);
@@ -147,7 +153,8 @@ class CartRepositoryTest {
         Long cartId = cartDto.getId();
         String discountCode = "DISCOUNT1";
         given(discountJpaAdapter.existsById(discountCode)).willReturn(true);
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(cartEntityMapper.toDto(cartEntity)).willReturn(cartDto);
 
         // When
@@ -155,7 +162,8 @@ class CartRepositoryTest {
 
         // Then
         then(discountJpaAdapter).should().existsById(discountCode);
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(cartJpaAdapter).should().flush();
         then(cartEntityMapper).should().toDto(cartEntity);
         assertThat(result).isEqualTo(cartDto);
@@ -181,7 +189,8 @@ class CartRepositoryTest {
         // Given
         Long cartId = cartDto.getId();
         String discountCode = "DISCOUNT1";
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(discountJpaAdapter.existsById(discountCode)).willReturn(true);
         given(cartEntityMapper.toDto(cartEntity)).willReturn(cartDto);
 
@@ -189,7 +198,8 @@ class CartRepositoryTest {
         CartDto result = cartRepository.removeDiscountFromCart(cartId, discountCode);
 
         // Then
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(discountJpaAdapter).should().existsById(discountCode);
         then(cartJpaAdapter).should().flush();
         then(cartEntityMapper).should().toDto(cartEntity);
@@ -201,7 +211,8 @@ class CartRepositoryTest {
         // Given
         Long cartId = cartDto.getId();
         String discountCode = "DISCOUNT1";
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(discountJpaAdapter.existsById(discountCode)).willReturn(false);
 
         // When
@@ -209,7 +220,8 @@ class CartRepositoryTest {
                 .isInstanceOf(NotFoundException.class);
 
         // Then
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(discountJpaAdapter).should().existsById(discountCode);
     }
 
@@ -247,14 +259,16 @@ class CartRepositoryTest {
         // Given
         given(cartEntityMapper.fromDto(cartDto)).willReturn(newCartEntity);
         given(productJpaAdapter.existsById(productItem.getId().getProductId())).willReturn(true);
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartEntity.getId())).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartEntity.getId())).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartEntity.getId())).willReturn(Optional.of(cartEntity));
         given(cartEntityMapper.toDto(newCartEntity)).willReturn(cartDto);
 
         CartDto result = cartRepository.updateCart(cartDto);
 
         then(cartEntityMapper).should().fromDto(cartDto);
         then(productJpaAdapter).should().existsById(productItem.getId().getProductId());
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartEntity.getId());
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartEntity.getId());
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartEntity.getId());
         then(cartEntityMapper).should().toDto(newCartEntity);
         assertThat(result).isEqualTo(cartDto);
     }
@@ -263,14 +277,16 @@ class CartRepositoryTest {
     void deleteCartTest() {
         // Given
         Long cartId = cartDto.getId();
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(cartEntityMapper.toDto(cartEntity)).willReturn(cartDto);
 
         // When
         CartDto result = cartRepository.deleteCart(cartId);
 
         // Then
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(cartJpaAdapter).should().deleteById(cartId);
         then(cartJpaAdapter).should().flush();
         assertThat(result).isEqualTo(cartDto);
@@ -280,14 +296,16 @@ class CartRepositoryTest {
     void getCartDtoByIdTest() {
         // Given
         Long cartId = cartDto.getId();
-        given(cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchDiscounts(cartId)).willReturn(Optional.of(cartEntity));
+        given(cartJpaAdapter.findByIdFetchProducts(cartId)).willReturn(Optional.of(cartEntity));
         given(cartEntityMapper.toDto(cartEntity)).willReturn(cartDto);
 
         // When
         CartDto result = cartRepository.getCartDtoById(cartId);
 
         // Then
-        then(cartJpaAdapter).should().findByIdFetchDiscountsAndProductIds(cartId);
+        then(cartJpaAdapter).should().findByIdFetchDiscounts(cartId);
+        then(cartJpaAdapter).should().findByIdFetchProducts(cartId);
         then(cartEntityMapper).should().toDto(cartEntity);
         assertThat(result).isEqualTo(cartDto);
     }

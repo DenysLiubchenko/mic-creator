@@ -54,14 +54,14 @@ public class CartDeltaEventProducerTest {
         CartFactEvent cartFactEvent = ModelUtils.getCartFactEvent(EventReason.CREATE.name());
 
         given(cartDeltaEventMapper.toEvent(cartDto, EventReason.CREATE.name())).willReturn(cartFactEvent);
-        given(kafkaAvroSerializer.serialize(CART_TOPIC + cartFactEvent.getSchema().getFullName(), cartFactEvent)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(CART_TOPIC + "-" + cartFactEvent.getSchema().getFullName(), cartFactEvent)).willReturn(serializedEvent);
 
         // When
         cartDeltaEventProducer.sendCreateEvent(cartDto);
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartDto, EventReason.CREATE.name());
-        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + cartFactEvent.getSchema().getFullName(), cartFactEvent);
+        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + "-" + cartFactEvent.getSchema().getFullName(), cartFactEvent);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(cartFactEvent.getId()))
@@ -76,14 +76,14 @@ public class CartDeltaEventProducerTest {
         DeleteCartDeltaEvent deleteCartEvent = ModelUtils.getDeleteCartDeltaEvent();
 
         given(cartDeltaEventMapper.toEvent(cartId)).willReturn(deleteCartEvent);
-        given(kafkaAvroSerializer.serialize(CART_TOPIC + deleteCartEvent.getSchema().getFullName(), deleteCartEvent)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(CART_TOPIC + "-" + deleteCartEvent.getSchema().getFullName(), deleteCartEvent)).willReturn(serializedEvent);
 
         // When
         cartDeltaEventProducer.sendDeleteEvent(cartId);
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId);
-        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + deleteCartEvent.getSchema().getFullName(), deleteCartEvent);
+        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + "-" + deleteCartEvent.getSchema().getFullName(), deleteCartEvent);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(deleteCartEvent.getId()))
@@ -98,14 +98,14 @@ public class CartDeltaEventProducerTest {
         ModifyProductItemCartDeltaEvent event = ModelUtils.getModifyProductItemCartDeltaEvent(EventReason.ADD_PRODUCT_ITEM.name());
 
         given(cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name())).willReturn(event);
-        given(kafkaAvroSerializer.serialize(CART_TOPIC + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
 
         // When
         cartDeltaEventProducer.sendAddProductItemEvent(cartId, productItemDtos);
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.ADD_PRODUCT_ITEM.name());
-        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
+        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
@@ -120,14 +120,14 @@ public class CartDeltaEventProducerTest {
         ModifyProductItemCartDeltaEvent event = ModelUtils.getModifyProductItemCartDeltaEvent(EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
 
         given(cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name())).willReturn(event);
-        given(kafkaAvroSerializer.serialize(CART_TOPIC + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
 
         // When
         cartDeltaEventProducer.sendUpdateProductItemEvent(cartId, productItemDtos);
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos), EventReason.CHANGE_QUANTITY_OF_PRODUCT_ITEM.name());
-        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
+        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
@@ -142,14 +142,14 @@ public class CartDeltaEventProducerTest {
         RemoveProductItemCartDeltaEvent event = ModelUtils.getRemoveProductItemCartDeltaEvent();
 
         given(cartDeltaEventMapper.toEvent(cartId, List.of(productItemDtos[0].getProductId()))).willReturn(event);
-        given(kafkaAvroSerializer.serialize(CART_TOPIC + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
 
         // When
         cartDeltaEventProducer.sendRemoveProductItemEvent(cartId, productItemDtos[0].getProductId());
 
         // Then
         then(cartDeltaEventMapper).should().toEvent(cartId, List.of(productItemDtos[0].getProductId()));
-        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
+        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
@@ -164,14 +164,14 @@ public class CartDeltaEventProducerTest {
         DiscountCartDeltaEvent event = ModelUtils.getDiscountCartDeltaEvent(EventReason.ADD_DISCOUNT.name());
 
         given(cartDeltaEventMapper.toDiscountEvent(cartId, List.of(discountCodes), EventReason.ADD_DISCOUNT.name())).willReturn(event);
-        given(kafkaAvroSerializer.serialize(CART_TOPIC + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
 
         // When
         cartDeltaEventProducer.sendAddDiscountEvent(cartId, discountCodes);
 
         // Then
         then(cartDeltaEventMapper).should().toDiscountEvent(cartId, List.of(discountCodes), EventReason.ADD_DISCOUNT.name());
-        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
+        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))
@@ -186,14 +186,14 @@ public class CartDeltaEventProducerTest {
         DiscountCartDeltaEvent event = ModelUtils.getDiscountCartDeltaEvent(EventReason.REMOVE_DISCOUNT.name());
 
         given(cartDeltaEventMapper.toDiscountEvent(cartId, List.of(discountCodes), EventReason.REMOVE_DISCOUNT.name())).willReturn(event);
-        given(kafkaAvroSerializer.serialize(CART_TOPIC + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
+        given(kafkaAvroSerializer.serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event)).willReturn(serializedEvent);
 
         // When
         cartDeltaEventProducer.sendRemoveDiscountEvent(cartId, discountCodes);
 
         // Then
         then(cartDeltaEventMapper).should().toDiscountEvent(cartId, List.of(discountCodes), EventReason.REMOVE_DISCOUNT.name());
-        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + event.getSchema().getFullName(), event);
+        then(kafkaAvroSerializer).should().serialize(CART_TOPIC + "-" + event.getSchema().getFullName(), event);
 
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(event.getId()))

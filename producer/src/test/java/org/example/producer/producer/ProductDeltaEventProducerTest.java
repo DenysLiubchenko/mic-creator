@@ -41,7 +41,7 @@ public class ProductDeltaEventProducerTest {
         // Given
         ProductFactEvent productFactEvent = ModelUtils.getProductFactEvent(EventReason.CREATE.name());
         given(productFactEventMapper.toEvent(productDto, EventReason.CREATE.name())).willReturn(productFactEvent);
-        given(kafkaAvroSerializer.serialize(PRODUCT_TOPIC + productFactEvent.getSchema().getFullName(), productFactEvent))
+        given(kafkaAvroSerializer.serialize(PRODUCT_TOPIC + "-" + productFactEvent.getSchema().getFullName(), productFactEvent))
                 .willReturn(serializedEvent);
 
         // When
@@ -49,7 +49,7 @@ public class ProductDeltaEventProducerTest {
 
         // Then
         then(productFactEventMapper).should().toEvent(productDto, EventReason.CREATE.name());
-        then(kafkaAvroSerializer).should().serialize(PRODUCT_TOPIC + productFactEvent.getSchema().getFullName(), productFactEvent);
+        then(kafkaAvroSerializer).should().serialize(PRODUCT_TOPIC + "-" + productFactEvent.getSchema().getFullName(), productFactEvent);
         then(outBoxJpaAdapter).should().save(OutBoxEntity.builder()
                 .key(String.valueOf(productFactEvent.getId()))
                 .destination(PRODUCT_TOPIC)

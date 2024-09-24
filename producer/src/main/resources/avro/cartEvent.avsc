@@ -37,7 +37,7 @@
         "name": "products",
         "type": {
           "type": "array",
-          "items": "org.example.ProductItem"
+          "items": "org.example.fact.ProductItem"
         },
         "default": [],
         "doc": "A list of products in the cart, represented by ProductItem."

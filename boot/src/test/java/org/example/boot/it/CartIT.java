@@ -33,6 +33,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -56,6 +57,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureWireMock(port = 0)
 @Sql(scripts = {"/start.sql", "/testData.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 @ActiveProfiles("test")
+@Transactional
 public class CartIT {
     @Autowired
     private ObjectMapper objectMapper;
@@ -114,7 +116,8 @@ public class CartIT {
                 .content(objectMapper.writeValueAsString(cartDTO))).andExpect(status().isNoContent());
 
         // Then
-        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId).get();
+        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscounts(cartId).get();
+        cartJpaAdapter.findByIdFetchProducts(cartId).get();
         assertThat(cartEntity.getDiscounts()).isEqualTo(cartDTO.getDiscounts());
         assertThat(cartEntity.getProducts().size()).isEqualTo(cartDTO.getProducts().size());
         cartEntity.getProducts().forEach(pe ->
@@ -154,7 +157,8 @@ public class CartIT {
     void deleteCartTest() throws Exception {
         // Given
         Long cartId = 50L;
-        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId).get();
+        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscounts(cartId).get();
+        cartJpaAdapter.findByIdFetchProducts(cartId).get();
 
         // When
         mockMvc.perform(MockMvcRequestBuilders.delete("/cart/{cartId}", cartId))
@@ -189,7 +193,8 @@ public class CartIT {
                 .andExpect(status().isNoContent());
 
         // Then
-        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId).get();
+        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscounts(cartId).get();
+        cartJpaAdapter.findByIdFetchProducts(cartId).get();
         assertThat(cartEntity.getDiscounts().contains(newDiscount)).isTrue();
 
         CartFactEvent cartFactEvent = CartFactEvent.newBuilder()
@@ -219,7 +224,8 @@ public class CartIT {
                 .andExpect(status().isNoContent());
 
         // Then
-        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId).get();
+        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscounts(cartId).get();
+        cartJpaAdapter.findByIdFetchProducts(cartId).get();
         assertThat(cartEntity.getDiscounts().contains(oldDiscount)).isFalse();
 
         CartFactEvent cartFactEvent = CartFactEvent.newBuilder()
@@ -251,7 +257,8 @@ public class CartIT {
                 .andExpect(status().isNoContent());
 
         // Then
-        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId).get();
+        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscounts(cartId).get();
+        cartJpaAdapter.findByIdFetchProducts(cartId).get();
         assertThat(cartEntity.getProducts().stream().anyMatch(p ->
                 p.getId().getProductId().equals(productItemDTO.getProductId()) &&
                         p.getQuantity().equals(productItemDTO.getQuantity()))).isTrue();
@@ -286,7 +293,8 @@ public class CartIT {
                 .andExpect(status().isNoContent());
 
         // Then
-        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId).get();
+        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscounts(cartId).get();
+        cartJpaAdapter.findByIdFetchProducts(cartId).get();
         assertThat(cartEntity.getProducts().stream().anyMatch(p ->
                 p.getId().getProductId().equals(productId))).isFalse();
 

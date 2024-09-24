@@ -147,8 +147,10 @@ public class CartRepositoryImpl implements CartRepository {
     }
 
     private CartEntity getCartById(Long cartId) {
-        return cartJpaAdapter.findByIdFetchDiscountsAndProductIds(cartId)
+        CartEntity cartEntity = cartJpaAdapter.findByIdFetchDiscounts(cartId)
                 .orElseThrow(() -> new NotFoundException("Cart with id: %s is not found".formatted(cartId)));
+        cartJpaAdapter.findByIdFetchProducts(cartId).get();
+        return cartEntity;
     }
 
     private void updateProducts(CartEntity existingCart, Set<ProductItemEntity> newProducts) {
